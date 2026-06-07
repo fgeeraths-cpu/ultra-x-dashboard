@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ultra X Morocco — Training Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏜️</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --sand-50: #fdf8f0;
+  --sand-100: #f5e6d0;
+  --sand-200: #e8cba0;
+  --sand-400: #d4a05a;
+  --sand-600: #b8762e;
+  --terra: #c2542d;
+  --terra-light: #e86b3a;
+  --navy: #0c1222;
+  --navy-light: #141d33;
+  --navy-card: #1a2340;
+  --navy-card2: #1e2a4a;
+  --sky: #1e3a6e;
+  --blue: #3b82f6;
+  --cyan: #22d3ee;
+  --emerald: #34d399;
+  --violet: #a78bfa;
+  --rose: #fb7185;
+  --amber: #fbbf24;
+  --text: #f0ece4;
+  --text-muted: #8b95ad;
+  --text-dim: #5a6478;
+  --border: rgba(255,255,255,0.06);
+  --glass: rgba(26,35,64,0.7);
+  --glass-border: rgba(255,255,255,0.08);
+  --glow-terra: rgba(194,84,45,0.3);
+  --glow-cyan: rgba(34,211,238,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated desert background */
+.bg-scene {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-scene::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; right: -50%; bottom: -50%;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(194,84,45,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(34,211,238,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(194,84,45,0.06) 0%, transparent 40%);
+  animation: bgDrift 30s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+  0% { transform: translate(0,0) rotate(0deg); }
+  100% { transform: translate(30px, -20px) rotate(2deg); }
+}
+.stars {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 60%;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 30% 25%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 15% 40%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 85% 5%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 45% 35%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 65% 45%, rgba(255,255,255,0.2), transparent);
+}
+.dunes {
+  position: absolute;
+  bottom: 0; left: -10%; right: -10%;
+  height: 40%;
+  background:
+    linear-gradient(165deg, transparent 30%, rgba(194,84,45,0.03) 50%, rgba(194,84,45,0.06) 100%);
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+}
+
+/* Layout */
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 20px 20px 40px;
+}
+
+/* Header */
+.hero {
+  text-align: center;
+  padding: 40px 20px 24px;
+  position: relative;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(194,84,45,0.15);
+  border: 1px solid rgba(194,84,45,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--terra-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--sand-100) 0%, var(--terra-light) 50%, var(--sand-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+.hero .tagline {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+/* Countdown */
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 24px 0 32px;
+  flex-wrap: wrap;
+}
+.cd-block {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px 24px;
+  text-align: center;
+  min-width: 90px;
+  position: relative;
+  overflow: hidden;
+}
+.cd-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--terra), var(--terra-light));
+}
+.cd-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--sand-100);
+  line-height: 1;
+}
+.cd-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+.col-4 { grid-column: span 4; }
+.col-6 { grid-column: span 6; }
+.col-8 { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
+
+/* Cards */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.2s;
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.12);
+}
+.card-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--terra-light), transparent);
+  opacity: 0.5;
+}
+.card h2 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card h2 .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--terra-light);
+}
+
+/* Metric cards */
+.metric {
+  text-align: center;
+}
+.metric-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.metric-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+.metric-sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* Stats grid inside card */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.stat-item {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+.stat-item .sv {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.stat-item .sl {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* Phase timeline */
+.phases-bar {
+  display: flex;
+  gap: 2px;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 8px;
+  margin-bottom: 20px;
+}
+.phases-bar .seg {
+  transition: flex 0.5s;
+  position: relative;
+}
+.phases-bar .seg.base { background: var(--cyan); flex: 6; }
+.phases-bar .seg.build { background: var(--violet); flex: 6; }
+.phases-bar .seg.peak { background: var(--terra-light); flex: 6; }
+.phases-bar .seg.taper { background: var(--emerald); flex: 4; }
+.phases-bar .seg.race { background: var(--rose); flex: 1; }
+
+.phase-marker {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 16px;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.5);
+  animation: markerPulse 2s infinite;
+}
+@keyframes markerPulse {
+  0%,100% { box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 16px rgba(255,255,255,0.8); }
+}
+
+.phase-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.phase-card {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 14px;
+  border-left: 3px solid;
+  transition: transform 0.2s, background 0.2s;
+}
+.phase-card:hover { background: rgba(0,0,0,0.3); transform: translateY(-2px); }
+.phase-card.active { background: rgba(194,84,45,0.1); }
+.phase-card h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.phase-card .p-dates {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.phase-card .p-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Chart */
+.chart-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--terra) transparent;
+}
+.chart-wrap::-webkit-scrollbar { height: 4px; }
+.chart-wrap::-webkit-scrollbar-thumb { background: var(--terra); border-radius: 2px; }
+.volume-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 200px;
+  min-width: max-content;
+  padding: 0 2px 24px;
+  position: relative;
+}
+.v-bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 28px;
+  flex-shrink: 0;
+}
+.v-bar {
+  width: 20px;
+  border-radius: 4px 4px 1px 1px;
+  transition: all 0.3s;
+  position: relative;
+  cursor: pointer;
+  min-height: 2px;
+}
+.v-bar:hover { filter: brightness(1.3); transform: scaleY(1.05); transform-origin: bottom; }
+.v-bar-label {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+  transform: rotate(-45deg);
+  white-space: nowrap;
+  transform-origin: top right;
+  width: 24px;
+  text-align: right;
+}
+.v-bar-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+.chart-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy-card2);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+.v-bar:hover .chart-tooltip { display: block; }
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+}
+
+/* Week table */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.week-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+  font-size: 0.8rem;
+}
+.week-table thead th {
+  text-align: left;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.3);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 1px solid var(--border);
+}
+.week-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.week-table tbody tr {
+  transition: background 0.2s;
+}
+.week-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.week-table tbody tr.current { background: rgba(194,84,45,0.08); }
+.week-table tbody tr.race-row { background: rgba(251,113,133,0.08); }
+.week-table tbody tr.recovery { background: rgba(52,211,153,0.05); }
+
+.wk-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: var(--terra-light);
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tag-base { background: rgba(34,211,238,0.15); color: var(--cyan); }
+.tag-build { background: rgba(167,139,250,0.15); color: var(--violet); }
+.tag-peak { background: rgba(232,107,58,0.15); color: var(--terra-light); }
+.tag-taper { background: rgba(52,211,153,0.15); color: var(--emerald); }
+.tag-race { background: rgba(251,113,133,0.15); color: var(--rose); }
+.km-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.long-run-val {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--amber);
+}
+.workout-desc {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* Typical week */
+.day-grid {
+  display: grid;
+  gap: 6px;
+}
+.day-row {
+  display: flex;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  align-items: center;
+  transition: background 0.2s;
+}
+.day-row:hover { background: rgba(0,0,0,0.25); }
+.day-name {
+  font-weight: 700;
+  font-size: 0.8rem;
+  min-width: 30px;
+  color: var(--sand-200);
+}
+.day-type {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  min-width: 60px;
+  text-align: center;
+}
+.day-rest { background: rgba(52,211,153,0.1); color: var(--emerald); }
+.day-easy { background: rgba(34,211,238,0.1); color: var(--cyan); }
+.day-tempo { background: rgba(167,139,250,0.1); color: var(--violet); }
+.day-long { background: rgba(194,84,45,0.15); color: var(--terra-light); }
+.day-b2b { background: rgba(251,113,133,0.1); color: var(--rose); }
+.day-strength { background: rgba(251,191,36,0.1); color: var(--amber); }
+.day-detail {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+/* Tips */
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tip {
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  border-left: 3px solid var(--cyan);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  transition: transform 0.2s;
+}
+.tip:hover { transform: translateX(4px); }
+.tip strong { color: var(--sand-100); }
+.tip.warn { border-left-color: var(--amber); }
+.tip.danger { border-left-color: var(--rose); }
+.tip.success { border-left-color: var(--emerald); }
+
+/* Exercise grid */
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.ex-card {
+  padding: 14px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 12px;
+  border-top: 2px solid var(--emerald);
+  transition: transform 0.2s;
+}
+.ex-card:hover { transform: translateY(-2px); }
+.ex-card h4 {
+  font-size: 0.8rem;
+  color: var(--emerald);
+  margin-bottom: 6px;
+}
+.ex-card p {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Milestones */
+.milestones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.milestone {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+.milestone:hover { transform: translateX(4px); }
+.ms-month {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  min-width: 36px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+.ms-text {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.ms-text strong { color: var(--sand-100); }
+
+/* Strava sync */
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  animation: syncPulse 2s infinite;
+}
+.sync-dot.offline { background: var(--text-dim); animation: none; }
+@keyframes syncPulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Strava check marks */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+.check.done {
+  background: var(--emerald);
+  border-color: var(--emerald);
+  color: white;
+}
+.check.partial {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: white;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 32px 0 8px;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+.footer a { color: var(--terra-light); text-decoration: none; }
+
+/* Scroll hint */
+.scroll-hint {
+  display: none;
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* Mobile nav */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(12,18,34,0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+  z-index: 100;
+  padding: 8px 12px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+.mobile-nav-inner {
+  display: flex;
+  justify-content: space-around;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.6rem;
+  padding: 6px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: color 0.2s;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+.nav-btn.active { color: var(--terra-light); }
+.nav-btn .nav-icon { font-size: 1.2rem; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .col-4, .col-6, .col-8 { grid-column: span 6; }
+}
+@media (max-width: 768px) {
+  .app { padding: 12px 12px 80px; }
+  .hero { padding: 20px 12px 16px; }
+  .hero h1 { font-size: 1.8rem; }
+  .grid { grid-template-columns: 1fr; gap: 12px; }
+  .col-4, .col-6, .col-8, .col-12 { grid-column: span 1; }
+  .card { padding: 18px; border-radius: 14px; }
+  .countdown { gap: 10px; }
+  .cd-block { padding: 12px 16px; min-width: 70px; }
+  .cd-num { font-size: 1.6rem; }
+  .metric-value { font-size: 1.8rem; }
+  .scroll-hint { display: block; }
+  .mobile-nav { display: block; }
+  .section[data-section] { display: none; }
+  .section[data-section].visible { display: block; }
+  .volume-chart { height: 160px; }
+  .phase-cards { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 400px) {
+  .phase-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-scene">
+  <div class="stars"></div>
+  <div class="dunes"></div>
+</div>
+
+<div class="app">
+  <header class="hero">
+    <div class="hero-badge">&#127963; Ultra X Morocco 2026</div>
+    <h1>Training Dashboard</h1>
+    <div class="tagline">100km in 2 etappes &mdash; 14 & 15 november</div>
+  </header>
+
+  <div class="countdown" id="countdown"></div>
+
+  <!-- Overview Section -->
+  <div class="section" data-section="overview">
+    <div class="grid">
+      <!-- Big countdown metric -->
+      <div class="card col-4">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Race Countdown</h2>
+        <div class="metric">
+          <div class="metric-value" style="color:var(--terra-light)" id="daysLeft">160</div>
+          <div class="metric-label">Dagen te gaan</div>
+          <div class="metric-sub" id="weeksLeft">22 weken en 6 dagen</div>
+        </div>
+      </div>
+
+      <!-- Current fitness -->
+      <div class="card col-4">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Huidige Fitness</h2>
+        <div class="stats-grid" id="fitnessStats">
+          <div class="stat-item"><div class="sv" style="color:var(--cyan)">—</div><div class="sl">Gem. km/week</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--violet)">—</div><div class="sl">Gem. pace</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--rose)">—</div><div class="sl">Gem. HR</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--amber)">—</div><div class="sl">Langste run</div></div>
+        </div>
+      </div>
+
+      <!-- Race profile -->
+      <div class="card col-4">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Race Profiel</h2>
+        <div class="stats-grid">
+          <div class="stat-item"><div class="sv" style="color:var(--rose)">100</div><div class="sl">Totaal km</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--amber)">2</div><div class="sl">Etappes</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--terra-light)">~50</div><div class="sl">km/dag</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--emerald)">&#127796;</div><div class="sl">Woestijn</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phases Section -->
+  <div class="section" data-section="plan" style="margin-top:16px">
+    <div class="grid">
+      <div class="card col-12">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Trainingsfasen</h2>
+        <div class="phases-bar">
+          <div class="seg base" id="segBase"></div>
+          <div class="seg build"></div>
+          <div class="seg peak"></div>
+          <div class="seg taper"></div>
+          <div class="seg race"></div>
+        </div>
+        <div class="phase-cards">
+          <div class="phase-card active" style="border-left-color:var(--cyan)">
+            <h3 style="color:var(--cyan)">Base Building</h3>
+            <div class="p-dates">Wk 1-6 &middot; 9 jun — 19 jul</div>
+            <div class="p-desc">Volume naar 55-60 km/week. Aerobe basis. Long runs tot 30 km.</div>
+          </div>
+          <div class="phase-card" style="border-left-color:var(--violet)">
+            <h3 style="color:var(--violet)">Build</h3>
+            <div class="p-dates">Wk 7-12 &middot; 20 jul — 29 aug</div>
+            <div class="p-desc">Volume 65-75 km. Back-to-back long runs. Hittetraining. Zand/trail.</div>
+          </div>
+          <div class="phase-card" style="border-left-color:var(--terra-light)">
+            <h3 style="color:var(--terra-light)">Peak</h3>
+            <div class="p-dates">Wk 13-18 &middot; 30 aug — 11 okt</div>
+            <div class="p-desc">Piekvolume 75-85 km. Race-simulaties 40+30 km. Voedingsstrategie.</div>
+          </div>
+          <div class="phase-card" style="border-left-color:var(--emerald)">
+            <h3 style="color:var(--emerald)">Taper</h3>
+            <div class="p-dates">Wk 19-22 &middot; 12 okt — 8 nov</div>
+            <div class="p-desc">Volume -40%. Snelheid behouden. Uitrusting finaliseren. Rust.</div>
+          </div>
+          <div class="phase-card" style="border-left-color:var(--rose)">
+            <h3 style="color:var(--rose)">Race</h3>
+            <div class="p-dates">Wk 23 &middot; 14-15 nov</div>
+            <div class="p-desc">Shakeout runs. Hydratatie. GO TIME.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Volume Chart -->
+  <div class="section" data-section="volume" style="margin-top:16px">
+    <div class="grid">
+      <div class="card col-12">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Weekvolume &mdash; Gelopen + Gepland</h2>
+        <div class="sync-status">
+          <span class="sync-dot" id="syncDot"></span>
+          <span id="syncText">Data wordt geladen...</span>
+        </div>
+        <div class="chart-wrap">
+          <div class="volume-chart" id="volumeChart"></div>
+        </div>
+        <div class="scroll-hint">&#8592; Scroll voor meer &#8594;</div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div> Gelopen</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(194,84,45,0.5)"></div> Gepland</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div> Race</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week Plan -->
+  <div class="section" data-section="plan" style="margin-top:16px">
+    <div class="grid">
+      <div class="card col-12">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Week-voor-week Schema</h2>
+        <div class="table-wrap">
+          <table class="week-table">
+            <thead>
+              <tr>
+                <th>Wk</th>
+                <th>Startdatum</th>
+                <th>Fase</th>
+                <th>Doel km</th>
+                <th>Long Run</th>
+                <th>Sleuteltrainingen</th>
+                <th>Focus</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="weekBody"></tbody>
+          </table>
+        </div>
+        <div class="scroll-hint">&#8592; Scroll voor alle kolommen &#8594;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typical week + IT Band -->
+  <div class="section" data-section="tips" style="margin-top:16px">
+    <div class="grid">
+      <div class="card col-6">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Typische Trainingsweek</h2>
+        <div class="day-grid">
+          <div class="day-row"><span class="day-name">Ma</span><span class="day-type day-rest">Rust</span><span class="day-detail">Rustdag of lichte cross-training (fietsen/zwemmen)</span></div>
+          <div class="day-row"><span class="day-name">Di</span><span class="day-type day-easy">Easy</span><span class="day-detail">Easy run 8-10 km, zone 2 (5:30-6:00/km)</span></div>
+          <div class="day-row"><span class="day-name">Wo</span><span class="day-type day-tempo">Tempo</span><span class="day-detail">Tempo/threshold 10-12 km, 4-6 km @ ~4:50/km</span></div>
+          <div class="day-row"><span class="day-name">Do</span><span class="day-type day-strength">Kracht</span><span class="day-detail">Recovery 6-8 km + krachttraining (core, glutes, IT-band)</span></div>
+          <div class="day-row"><span class="day-name">Vr</span><span class="day-type day-easy">Easy</span><span class="day-detail">Easy run 8-10 km of extra rustdag</span></div>
+          <div class="day-row"><span class="day-name">Za</span><span class="day-type day-long">Long</span><span class="day-detail">Long run 25-40 km, slow pace, voeding oefenen</span></div>
+          <div class="day-row"><span class="day-name">Zo</span><span class="day-type day-b2b">B2B</span><span class="day-detail">Back-to-back 15-25 km op vermoeide benen</span></div>
+        </div>
+      </div>
+
+      <div class="card col-6">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> IT-Band Preventie</h2>
+        <div class="ex-grid">
+          <div class="ex-card"><h4>Foam Rolling</h4><p>Dagelijks 5 min. Buitenkant bovenbeen, heup tot knie.</p></div>
+          <div class="ex-card"><h4>Clamshells</h4><p>3x15 per kant met weerstandsband. Gluteus medius.</p></div>
+          <div class="ex-card"><h4>Side Leg Raises</h4><p>3x12 per kant. Langzaam, focus op heupstabiliteit.</p></div>
+          <div class="ex-card"><h4>SL Deadlifts</h4><p>3x10 per kant. Balans + posterieure keten.</p></div>
+          <div class="ex-card"><h4>Hip Flexor Stretch</h4><p>2x45s per kant na elke run.</p></div>
+          <div class="ex-card"><h4>Monster Walks</h4><p>3x15 stappen. Band rond enkels. Heupabductoren.</p></div>
+        </div>
+        <p style="font-size:0.7rem;color:var(--text-dim);margin-top:12px">Min. 3x/week. Bij opflakkering: direct volume reduceren.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nutrition & Milestones -->
+  <div class="section" data-section="tips" style="margin-top:16px">
+    <div class="grid">
+      <div class="card col-6">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Voeding & Uitrusting</h2>
+        <div class="tips-list">
+          <div class="tip"><strong>Koolhydraten:</strong> Oefen met 60-90g/uur tijdens long runs. Gels, wafels, dadels, noten.</div>
+          <div class="tip"><strong>Hydratatie:</strong> 500-750ml/uur + elektrolyten. In hitte tot 1L/uur. Train met race-vest.</div>
+          <div class="tip warn"><strong>Zand-specifiek:</strong> Gamaschen zijn essentieel. Train met raceschoenen op strand/zand.</div>
+          <div class="tip"><strong>Hittetraining:</strong> Vanaf aug: sauna na runs (15-20 min), extra lagen, middag-runs.</div>
+          <div class="tip danger"><strong>Gear rule:</strong> Test ALLES voor september. Niets nieuws op racedag!</div>
+        </div>
+      </div>
+
+      <div class="card col-6">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Doelen & Milestones</h2>
+        <div class="milestones">
+          <div class="milestone"><div class="ms-month" style="background:rgba(34,211,238,0.15);color:var(--cyan)">JUN</div><div class="ms-text"><strong>50+ km/week</strong> bereiken. Long run naar 28 km. Basis leggen.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(167,139,250,0.15);color:var(--violet)">JUL</div><div class="ms-text">Eerste <strong>back-to-back</strong> weekend (25+20 km). Begin hittetraining.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(167,139,250,0.15);color:var(--violet)">AUG</div><div class="ms-text"><strong>70+ km/week</strong>. B2B 30+20 km. Voedingsstrategie verfijnen.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">SEP</div><div class="ms-text">Race-simulatie: <strong>40+35 km</strong> weekend. Piekweek 80+ km.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">OKT</div><div class="ms-text">Laatste simulatie <strong>45+40 km</strong>. Uitrusting klaar. Start taper.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(251,113,133,0.15);color:var(--rose)">NOV</div><div class="ms-text">Fris aan de start. <strong>RACE DAY 14 & 15 november!</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    Trainingsplan op basis van Strava data &middot; <a href="https://www.strava.com/athletes/93623983" target="_blank">Strava profiel</a> &middot; Ultra X Morocco 2026 &middot; Felix
+    <div id="lastUpdated" style="margin-top:4px"></div>
+  </footer>
+</div>
+
+<!-- Mobile navigation -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="nav-btn active" data-nav="overview"><span class="nav-icon">&#9829;</span>Overzicht</button>
+    <button class="nav-btn" data-nav="plan"><span class="nav-icon">&#128197;</span>Plan</button>
+    <button class="nav-btn" data-nav="volume"><span class="nav-icon">&#128200;</span>Volume</button>
+    <button class="nav-btn" data-nav="tips"><span class="nav-icon">&#128161;</span>Tips</button>
+  </div>
+</nav>
+
+<script>
+// ─── CONFIG ───
+const RACE_DATE = new Date(2026, 10, 14);
+const PLAN_START = new Date(2026, 5, 9); // June 9
+
+// ─── TRAINING PLAN ───
+const PLAN = [
+  {wk:1,date:'9 jun',phase:'base',km:45,longRun:24,key:'Easy volume opbouw + 2x krachttraining',focus:'Aerobe basis',recovery:false},
+  {wk:2,date:'16 jun',phase:'base',km:48,longRun:26,key:'Tempo run 8 km + trail run',focus:'Volume opbouwen',recovery:false},
+  {wk:3,date:'23 jun',phase:'base',km:52,longRun:28,key:'Fartlek 10 km + easy doubles',focus:'Long run verlengen',recovery:false},
+  {wk:4,date:'30 jun',phase:'base',km:42,longRun:22,key:'Recovery week — alle runs easy pace',focus:'Herstelweek',recovery:true},
+  {wk:5,date:'7 jul',phase:'base',km:55,longRun:30,key:'Tempo 10 km + hill repeats + B2B intro (30+12)',focus:'B2B intro',recovery:false},
+  {wk:6,date:'14 jul',phase:'base',km:58,longRun:30,key:'Threshold run + long run op trails',focus:'Trail gewenning',recovery:false},
+  {wk:7,date:'21 jul',phase:'build',km:62,longRun:32,key:'Back-to-back weekend (32+15) + tempo',focus:'B2B opbouwen',recovery:false},
+  {wk:8,date:'28 jul',phase:'build',km:65,longRun:30,key:'Hitte-run middaguur + sauna protocol start',focus:'Hitte-adaptatie',recovery:false},
+  {wk:9,date:'4 aug',phase:'build',km:50,longRun:22,key:'Recovery week — easy + cross-training',focus:'Herstelweek',recovery:true},
+  {wk:10,date:'11 aug',phase:'build',km:68,longRun:35,key:'B2B (35+20) + zandtraining',focus:'Vermoeidheid tolerantie',recovery:false},
+  {wk:11,date:'18 aug',phase:'build',km:72,longRun:35,key:'Voedingsstrategie oefenen op long run',focus:'Voeding testen',recovery:false},
+  {wk:12,date:'25 aug',phase:'build',km:75,longRun:38,key:'B2B (38+22) + mentale training',focus:'Piekaanloop',recovery:false},
+  {wk:13,date:'1 sep',phase:'peak',km:60,longRun:28,key:'Recovery + race gear testen',focus:'Herstelweek',recovery:true},
+  {wk:14,date:'8 sep',phase:'peak',km:78,longRun:40,key:'Race simulatie #1: 40+25 km weekend',focus:'Simulatie 1',recovery:false},
+  {wk:15,date:'15 sep',phase:'peak',km:82,longRun:42,key:'Piekweek: 42+25 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
+  {wk:16,date:'22 sep',phase:'peak',km:60,longRun:25,key:'Recovery — easy runs + sauna',focus:'Herstelweek',recovery:true},
+  {wk:17,date:'29 sep',phase:'peak',km:82,longRun:45,key:'Race simulatie #2: 45+30 km + race-voeding',focus:'Simulatie 2',recovery:false},
+  {wk:18,date:'6 okt',phase:'peak',km:75,longRun:38,key:'Laatste grote week: 38+25 + gear finaal',focus:'Laatste peak',recovery:false},
+  {wk:19,date:'13 okt',phase:'taper',km:55,longRun:25,key:'Volume -30% — easy runs + strides',focus:'Afbouw start',recovery:false},
+  {wk:20,date:'20 okt',phase:'taper',km:45,longRun:20,key:'Volume -45% — focus slaap & voeding',focus:'Dieper afbouwen',recovery:false},
+  {wk:21,date:'27 okt',phase:'taper',km:35,longRun:16,key:'Lichte runs + strides. Packing.',focus:'Race voorbereiding',recovery:false},
+  {wk:22,date:'3 nov',phase:'taper',km:25,longRun:10,key:'Shakeout runs. Mentale visualisatie.',focus:'Laatste rust',recovery:false},
+  {wk:23,date:'10 nov',phase:'race',km:100,longRun:50,key:'Ma-Wo shakeout 3-5 km. Do rust. Vr-Za RACE!',focus:'RACE DAY!',recovery:false},
+];
+
+// ─── COUNTDOWN ───
+function updateCountdown() {
+  const now = new Date();
+  const diff = RACE_DATE - now;
+  const days = Math.max(0, Math.floor(diff / 864e5));
+  const weeks = Math.floor(days / 7);
+  const rd = days % 7;
+  const hours = Math.floor((diff % 864e5) / 36e5);
+
+  document.getElementById('countdown').innerHTML = `
+    <div class="cd-block"><div class="cd-num">${days}</div><div class="cd-label">Dagen</div></div>
+    <div class="cd-block"><div class="cd-num">${weeks}</div><div class="cd-label">Weken</div></div>
+    <div class="cd-block"><div class="cd-num">${rd}</div><div class="cd-label">Restdagen</div></div>
+    <div class="cd-block"><div class="cd-num">${hours}</div><div class="cd-label">Uur</div></div>
+  `;
+  document.getElementById('daysLeft').textContent = days;
+  document.getElementById('weeksLeft').textContent = `${weeks} weken en ${rd} dagen`;
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+// ─── LOAD DATA & RENDER ───
+let activityData = null;
+
+async function loadData() {
+  try {
+    const res = await fetch('data/activities.json');
+    activityData = await res.json();
+    document.getElementById('syncDot').classList.remove('offline');
+    document.getElementById('syncText').textContent = `Laatste sync: ${new Date(activityData.last_updated).toLocaleDateString('nl-NL')}`;
+    document.getElementById('lastUpdated').textContent = `Data bijgewerkt: ${new Date(activityData.last_updated).toLocaleDateString('nl-NL', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}`;
+    renderFitness();
+    renderChart();
+    renderWeekTable();
+  } catch(e) {
+    document.getElementById('syncDot').classList.add('offline');
+    document.getElementById('syncText').textContent = 'Geen data beschikbaar';
+    renderChart();
+    renderWeekTable();
+  }
+}
+
+function renderFitness() {
+  if (!activityData) return;
+  const weeks = activityData.weekly_summaries;
+  const recent8 = weeks.slice(-8);
+  const avgKm = recent8.reduce((s,w) => s + w.distance_km, 0) / recent8.length;
+  const avgHr = recent8.filter(w=>w.avg_hr>0).reduce((s,w) => s + w.avg_hr, 0) / recent8.filter(w=>w.avg_hr>0).length;
+
+  const acts = activityData.activities;
+  const recent = acts.slice(0, 20);
+  const avgPace = recent.filter(a=>a.pace_min_per_km>0 && a.pace_min_per_km<10).reduce((s,a) => s + a.pace_min_per_km, 0) / recent.filter(a=>a.pace_min_per_km>0 && a.pace_min_per_km<10).length;
+  const pm = Math.floor(avgPace);
+  const ps = Math.round((avgPace - pm) * 60);
+
+  const longestRecent = Math.max(...acts.slice(0, 30).map(a => a.distance_km));
+
+  const grid = document.getElementById('fitnessStats');
+  grid.innerHTML = `
+    <div class="stat-item"><div class="sv" style="color:var(--cyan)">${Math.round(avgKm)}</div><div class="sl">Gem. km/week</div></div>
+    <div class="stat-item"><div class="sv" style="color:var(--violet)">${pm}:${ps.toString().padStart(2,'0')}</div><div class="sl">Gem. pace</div></div>
+    <div class="stat-item"><div class="sv" style="color:var(--rose)">${Math.round(avgHr)}</div><div class="sl">Gem. HR</div></div>
+    <div class="stat-item"><div class="sv" style="color:var(--amber)">${longestRecent.toFixed(1)}</div><div class="sl">Langste (recent)</div></div>
+  `;
+}
+
+function renderChart() {
+  const chart = document.getElementById('volumeChart');
+  chart.innerHTML = '';
+
+  // Historical weeks from data
+  let histWeeks = [];
+  if (activityData) {
+    const ws = activityData.weekly_summaries;
+    histWeeks = ws.slice(-16).map(w => ({
+      label: new Date(w.week_start).toLocaleDateString('nl-NL', {day:'numeric', month:'short'}),
+      km: w.distance_km,
+      type: 'actual'
+    }));
+  }
+
+  // Planned weeks
+  const planBars = PLAN.map(p => ({
+    label: p.date,
+    km: p.km,
+    type: 'plan',
+    phase: p.phase
+  }));
+
+  const all = [...histWeeks, ...planBars];
+  const maxKm = Math.max(...all.map(d => d.km), 100);
+
+  all.forEach(d => {
+    const group = document.createElement('div');
+    group.className = 'v-bar-group';
+
+    const val = document.createElement('div');
+    val.className = 'v-bar-val';
+    val.textContent = Math.round(d.km);
+    group.appendChild(val);
+
+    const bar = document.createElement('div');
+    bar.className = 'v-bar';
+    bar.style.height = (d.km / maxKm * 160) + 'px';
+
+    if (d.type === 'actual') {
+      bar.style.background = 'linear-gradient(to top, rgba(34,211,238,0.6), var(--cyan))';
+    } else if (d.phase === 'race') {
+      bar.style.background = 'linear-gradient(to top, var(--rose), #ff8888)';
+    } else if (d.phase === 'base') {
+      bar.style.background = 'linear-gradient(to top, rgba(34,211,238,0.2), rgba(34,211,238,0.5))';
+    } else if (d.phase === 'build') {
+      bar.style.background = 'linear-gradient(to top, rgba(167,139,250,0.2), rgba(167,139,250,0.5))';
+    } else if (d.phase === 'peak') {
+      bar.style.background = 'linear-gradient(to top, rgba(232,107,58,0.2), rgba(232,107,58,0.5))';
+    } else {
+      bar.style.background = 'linear-gradient(to top, rgba(52,211,153,0.2), rgba(52,211,153,0.5))';
+    }
+
+    const tip = document.createElement('div');
+    tip.className = 'chart-tooltip';
+    tip.textContent = `${d.label}: ${Math.round(d.km)} km`;
+    bar.appendChild(tip);
+    group.appendChild(bar);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'v-bar-label';
+    lbl.textContent = d.label;
+    group.appendChild(lbl);
+
+    chart.appendChild(group);
+  });
+
+  // Scroll to end (planned)
+  const wrap = chart.parentElement;
+  setTimeout(() => wrap.scrollLeft = wrap.scrollWidth, 100);
+}
+
+function renderWeekTable() {
+  const tbody = document.getElementById('weekBody');
+  tbody.innerHTML = '';
+
+  // Determine current week
+  const now = new Date();
+  const currentWeekIdx = Math.floor((now - PLAN_START) / (7 * 864e5));
+
+  // Get actual weekly data for comparison
+  const actualByWeek = {};
+  if (activityData) {
+    activityData.weekly_summaries.forEach(w => {
+      actualByWeek[w.week_start] = w;
+    });
+  }
+
+  PLAN.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    if (i === currentWeekIdx) tr.className = 'current';
+    else if (p.phase === 'race') tr.className = 'race-row';
+    else if (p.recovery) tr.className = 'recovery';
+
+    const tagClass = `tag-${p.phase}`;
+    const phaseNames = {base:'Base',build:'Build',peak:'Peak',taper:'Taper',race:'Race'};
+
+    // Check if this week has actual data
+    let statusHTML = '';
+    const weekDate = getWeekDate(p.wk);
+    if (weekDate) {
+      const actual = actualByWeek[weekDate];
+      if (actual && actual.distance_km > 0) {
+        const pct = Math.round(actual.distance_km / p.km * 100);
+        if (pct >= 90) statusHTML = '<span class="check done">&#10003;</span>';
+        else if (pct >= 50) statusHTML = `<span class="check partial">${pct}%</span>`;
+        else statusHTML = `<span style="font-size:0.7rem;color:var(--text-dim)">${actual.distance_km.toFixed(0)} km</span>`;
+      }
+    }
+    if (i > currentWeekIdx) statusHTML = '<span style="font-size:0.7rem;color:var(--text-dim)">—</span>';
+
+    tr.innerHTML = `
+      <td><span class="wk-num">${i === currentWeekIdx ? '<span style="display:inline-block;width:6px;height:6px;background:var(--terra-light);border-radius:50%;margin-right:4px;animation:markerPulse 2s infinite"></span>' : ''}${p.wk}</span></td>
+      <td>${p.date}</td>
+      <td><span class="tag ${tagClass}">${phaseNames[p.phase]}</span></td>
+      <td><span class="km-val">${p.km}</span></td>
+      <td><span class="long-run-val">${p.longRun} km</span></td>
+      <td><span class="workout-desc">${p.key}</span></td>
+      <td><span style="font-size:0.75rem;color:var(--text-muted)">${p.focus}</span></td>
+      <td>${statusHTML}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function getWeekDate(weekNum) {
+  const d = new Date(PLAN_START);
+  d.setDate(d.getDate() + (weekNum - 1) * 7);
+  const monday = new Date(d);
+  monday.setDate(monday.getDate() - monday.getDay() + 1);
+  return monday.toISOString().split('T')[0];
+}
+
+// ─── MOBILE NAV ───
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.dataset.nav;
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => {
+      const show = s.dataset.section === section;
+      s.classList.toggle('visible', show);
+    });
+  });
+});
+// Init: show overview on mobile
+if (window.innerWidth <= 768) {
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.toggle('visible', s.dataset.section === 'overview');
+  });
+}
+
+// ─── INIT ───
+loadData();
+</script>
+</body>
+</html>
