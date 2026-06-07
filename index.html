@@ -686,10 +686,25 @@ body {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+}
+.cw-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cw-week-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--terra), var(--terra-light));
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  letter-spacing: 1px;
 }
 .cw-header h3 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--sand-100);
 }
@@ -697,136 +712,283 @@ body {
   font-size: 0.75rem;
   color: var(--text-muted);
 }
-.cw-progress {
-  display: flex;
+.cw-summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
   align-items: center;
-  gap: 12px;
   margin-bottom: 20px;
-  padding: 12px 16px;
-  background: rgba(0,0,0,0.2);
-  border-radius: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(194,84,45,0.08), rgba(34,211,238,0.05));
+  border: 1px solid rgba(194,84,45,0.15);
+  border-radius: 14px;
+}
+.cw-progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 .cw-progress-bar {
-  flex: 1;
-  height: 6px;
+  height: 8px;
   background: rgba(255,255,255,0.06);
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
+  width: 100%;
 }
 .cw-progress-fill {
   height: 100%;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--terra), var(--terra-light));
-  transition: width 0.5s ease;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--terra), var(--terra-light), var(--amber));
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.cw-progress-text {
+.cw-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.cw-progress-pct {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--terra-light);
-  min-width: 80px;
-  text-align: right;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--terra-light), var(--amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.cw-progress-pct-label {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
 }
 .cw-days {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 .cw-day {
   display: grid;
-  grid-template-columns: 40px 44px 80px 1fr auto;
+  grid-template-columns: 52px 1fr auto;
   align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
+  gap: 14px;
+  padding: 14px 16px;
   background: rgba(0,0,0,0.12);
-  border-radius: 12px;
+  border-radius: 14px;
   border-left: 3px solid transparent;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
-.cw-day:hover { background: rgba(0,0,0,0.22); transform: translateX(4px); }
+.cw-day:hover { background: rgba(0,0,0,0.22); transform: translateX(6px); }
 .cw-day.today {
-  background: rgba(194,84,45,0.1);
+  background: linear-gradient(135deg, rgba(194,84,45,0.12), rgba(194,84,45,0.05));
   border-left-color: var(--terra-light);
-  box-shadow: inset 0 0 0 1px rgba(194,84,45,0.2);
+  box-shadow: 0 0 20px rgba(194,84,45,0.1);
+}
+.cw-day.today::before {
+  content: 'VANDAAG';
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--terra-light);
+  opacity: 0.7;
 }
 .cw-day.done {
-  opacity: 0.6;
+  opacity: 0.5;
+}
+.cw-day.done .cw-day-left { text-decoration: line-through; text-decoration-color: var(--emerald); }
+.cw-day-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 .cw-day-name {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.85rem;
-  color: var(--sand-200);
+  color: var(--sand-100);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 .cw-day-date {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: var(--text-dim);
+}
+.cw-day-center {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cw-day-type-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cw-day-emoji {
+  font-size: 1.1rem;
+  line-height: 1;
 }
 .cw-day-type {
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 3px 8px;
+  padding: 3px 10px;
   border-radius: 6px;
   text-align: center;
 }
 .cw-day-type.rest { background: rgba(52,211,153,0.1); color: var(--emerald); }
 .cw-day-type.easy { background: rgba(34,211,238,0.1); color: var(--cyan); }
 .cw-day-type.tempo { background: rgba(167,139,250,0.12); color: var(--violet); }
-.cw-day-type.long { background: rgba(194,84,45,0.15); color: var(--terra-light); }
-.cw-day-type.b2b { background: rgba(251,113,133,0.12); color: var(--rose); }
+.cw-day-type.long { background: linear-gradient(135deg, rgba(194,84,45,0.2), rgba(194,84,45,0.1)); color: var(--terra-light); }
+.cw-day-type.b2b { background: linear-gradient(135deg, rgba(251,113,133,0.15), rgba(251,113,133,0.08)); color: var(--rose); }
 .cw-day-type.strength { background: rgba(251,191,36,0.1); color: var(--amber); }
 .cw-day-type.hills { background: rgba(232,107,58,0.12); color: var(--terra-light); }
 .cw-day-type.recovery { background: rgba(52,211,153,0.08); color: var(--emerald); }
 .cw-day-desc {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.4;
 }
+.cw-day-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 56px;
+}
 .cw-day-km {
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: var(--sand-200);
-  text-align: right;
-  min-width: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--sand-100);
 }
-.cw-day-km .actual {
-  color: var(--emerald);
-  font-size: 0.65rem;
-  display: block;
-}
-.cw-day-status {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+.cw-day-km.zero { color: var(--text-dim); font-size: 0.8rem; }
+.cw-actual-badge {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 3px;
   font-size: 0.6rem;
-  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--emerald);
+  background: rgba(52,211,153,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
-.cw-day-status.completed {
-  background: var(--emerald);
-  color: white;
+
+/* Plan timeline cards (replaces table on mobile) */
+.plan-cards {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
 }
-.cw-day-status.pending {
-  border: 2px solid var(--text-dim);
+.plan-card {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+  padding: 16px;
+  background: rgba(0,0,0,0.12);
+  border-radius: 14px;
+  border-left: 4px solid;
+  position: relative;
+  transition: transform 0.2s;
 }
-.cw-day-status.today-dot {
-  border: 2px solid var(--terra-light);
-  animation: markerPulse 2s infinite;
+.plan-card:hover { transform: translateX(4px); }
+.plan-card.current-plan {
+  background: linear-gradient(135deg, rgba(194,84,45,0.1), rgba(194,84,45,0.03));
+  box-shadow: 0 0 24px rgba(194,84,45,0.08);
+}
+.plan-card.current-plan::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-top: 28px solid var(--terra-light);
+  border-left: 28px solid transparent;
+  border-top-right-radius: 10px;
+  opacity: 0.7;
+}
+.plan-card.recovery-plan { opacity: 0.75; }
+.plan-card-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 2px;
+}
+.plan-card-wk {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.plan-card-km {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.plan-card-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.plan-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.plan-card-focus {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--sand-100);
+}
+.plan-card-date {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+.plan-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.plan-card-lr {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  color: var(--amber);
+  font-weight: 600;
+}
+.plan-card-workout {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.plan-card-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
 }
 
 @media (max-width: 768px) {
   .cw-day {
-    grid-template-columns: 36px 40px 70px 1fr;
-    gap: 8px;
-    padding: 10px 12px;
+    grid-template-columns: 44px 1fr auto;
+    gap: 10px;
+    padding: 12px 14px;
   }
-  .cw-day-km { display: none; }
-  .cw-day-desc { font-size: 0.75rem; }
+  .cw-day-desc { font-size: 0.72rem; }
+  .cw-day-km { font-size: 0.85rem; }
+  .cw-summary { grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; }
+  .plan-cards { display: flex; }
+  .table-wrap { display: none; }
 }
 
 /* Footer */
@@ -1053,6 +1215,7 @@ body {
       <div class="card col-12">
         <div class="card-glow"></div>
         <h2><span class="dot"></span> Week-voor-week Schema</h2>
+        <!-- Desktop: table view -->
         <div class="table-wrap">
           <table class="week-table">
             <thead>
@@ -1070,7 +1233,8 @@ body {
             <tbody id="weekBody"></tbody>
           </table>
         </div>
-        <div class="scroll-hint">&#8592; Scroll voor alle kolommen &#8594;</div>
+        <!-- Mobile: card view -->
+        <div class="plan-cards" id="planCards"></div>
       </div>
     </div>
   </div>
@@ -1232,25 +1396,29 @@ async function loadData() {
 
 function renderFitness() {
   if (!activityData) return;
+  // Use last 13 weeks (3 months) for averages
   const weeks = activityData.weekly_summaries;
-  const recent8 = weeks.slice(-8);
-  const avgKm = recent8.reduce((s,w) => s + w.distance_km, 0) / recent8.length;
-  const avgHr = recent8.filter(w=>w.avg_hr>0).reduce((s,w) => s + w.avg_hr, 0) / recent8.filter(w=>w.avg_hr>0).length;
+  const recent13 = weeks.slice(-13);
+  const avgKm = recent13.reduce((s,w) => s + w.distance_km, 0) / recent13.length;
+  const avgHr = recent13.filter(w=>w.avg_hr>0).reduce((s,w) => s + w.avg_hr, 0) / recent13.filter(w=>w.avg_hr>0).length;
 
-  const acts = activityData.activities;
-  const recent = acts.slice(0, 20);
-  const avgPace = recent.filter(a=>a.pace_min_per_km>0 && a.pace_min_per_km<10).reduce((s,a) => s + a.pace_min_per_km, 0) / recent.filter(a=>a.pace_min_per_km>0 && a.pace_min_per_km<10).length;
+  // Pace over last 3 months of activities
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  const recentActs = activityData.activities.filter(a => new Date(a.datetime) >= threeMonthsAgo);
+  const paceActs = recentActs.filter(a => a.pace_min_per_km > 0 && a.pace_min_per_km < 10);
+  const avgPace = paceActs.reduce((s,a) => s + a.pace_min_per_km, 0) / paceActs.length;
   const pm = Math.floor(avgPace);
   const ps = Math.round((avgPace - pm) * 60);
 
-  const longestRecent = Math.max(...acts.slice(0, 30).map(a => a.distance_km));
+  const longestRecent = Math.max(...recentActs.map(a => a.distance_km));
 
   const grid = document.getElementById('fitnessStats');
   grid.innerHTML = `
     <div class="stat-item"><div class="sv" style="color:var(--cyan)">${Math.round(avgKm)}</div><div class="sl">Gem. km/week</div></div>
     <div class="stat-item"><div class="sv" style="color:var(--violet)">${pm}:${ps.toString().padStart(2,'0')}</div><div class="sl">Gem. pace</div></div>
     <div class="stat-item"><div class="sv" style="color:var(--rose)">${Math.round(avgHr)}</div><div class="sl">Gem. HR</div></div>
-    <div class="stat-item"><div class="sv" style="color:var(--amber)">${longestRecent.toFixed(1)}</div><div class="sl">Langste (recent)</div></div>
+    <div class="stat-item"><div class="sv" style="color:var(--amber)">${longestRecent.toFixed(1)}</div><div class="sl">Langste (3 mnd)</div></div>
   `;
 }
 
@@ -1328,13 +1496,13 @@ function renderChart() {
 
 function renderWeekTable() {
   const tbody = document.getElementById('weekBody');
+  const planCardsEl = document.getElementById('planCards');
   tbody.innerHTML = '';
+  planCardsEl.innerHTML = '';
 
-  // Determine current week
   const now = new Date();
   const currentWeekIdx = Math.floor((now - PLAN_START) / (7 * 864e5));
 
-  // Get actual weekly data for comparison
   const actualByWeek = {};
   if (activityData) {
     activityData.weekly_summaries.forEach(w => {
@@ -1342,31 +1510,47 @@ function renderWeekTable() {
     });
   }
 
+  const phaseNames = {base:'Base',build:'Build',peak:'Peak',taper:'Taper',race:'Race'};
+  const phaseColors = {base:'var(--cyan)',build:'var(--violet)',peak:'var(--terra-light)',taper:'var(--emerald)',race:'var(--rose)'};
+  const phaseEmoji = {base:'🏃',build:'🔨',peak:'🔥',taper:'🧘',race:'🏁'};
+
   PLAN.forEach((p, i) => {
-    const tr = document.createElement('tr');
-    if (i === currentWeekIdx) tr.className = 'current';
-    else if (p.phase === 'race') tr.className = 'race-row';
-    else if (p.recovery) tr.className = 'recovery';
-
     const tagClass = `tag-${p.phase}`;
-    const phaseNames = {base:'Base',build:'Build',peak:'Peak',taper:'Taper',race:'Race'};
-
-    // Check if this week has actual data
-    let statusHTML = '';
+    const isCurrent = i === currentWeekIdx;
     const weekDate = getWeekDate(p.wk);
+
+    // Status
+    let statusHTML = '';
+    let statusCard = '';
     if (weekDate) {
       const actual = actualByWeek[weekDate];
       if (actual && actual.distance_km > 0) {
         const pct = Math.round(actual.distance_km / p.km * 100);
-        if (pct >= 90) statusHTML = '<span class="check done">&#10003;</span>';
-        else if (pct >= 50) statusHTML = `<span class="check partial">${pct}%</span>`;
-        else statusHTML = `<span style="font-size:0.7rem;color:var(--text-dim)">${actual.distance_km.toFixed(0)} km</span>`;
+        if (pct >= 90) {
+          statusHTML = '<span class="check done">&#10003;</span>';
+          statusCard = '<span class="actual-badge" style="background:rgba(52,211,153,0.15);color:var(--emerald);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700">&#10003; Done</span>';
+        } else if (pct >= 50) {
+          statusHTML = `<span class="check partial">${pct}%</span>`;
+          statusCard = `<span style="background:rgba(251,191,36,0.15);color:var(--amber);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700">${pct}%</span>`;
+        } else {
+          statusHTML = `<span style="font-size:0.7rem;color:var(--text-dim)">${actual.distance_km.toFixed(0)} km</span>`;
+          statusCard = statusHTML;
+        }
       }
     }
-    if (i > currentWeekIdx) statusHTML = '<span style="font-size:0.7rem;color:var(--text-dim)">—</span>';
+    if (i > currentWeekIdx) {
+      statusHTML = '<span style="font-size:0.7rem;color:var(--text-dim)">—</span>';
+      statusCard = '';
+    }
+
+    // Desktop table row
+    const tr = document.createElement('tr');
+    if (isCurrent) tr.className = 'current';
+    else if (p.phase === 'race') tr.className = 'race-row';
+    else if (p.recovery) tr.className = 'recovery';
 
     tr.innerHTML = `
-      <td><span class="wk-num">${i === currentWeekIdx ? '<span style="display:inline-block;width:6px;height:6px;background:var(--terra-light);border-radius:50%;margin-right:4px;animation:markerPulse 2s infinite"></span>' : ''}${p.wk}</span></td>
+      <td><span class="wk-num">${isCurrent ? '<span style="display:inline-block;width:6px;height:6px;background:var(--terra-light);border-radius:50%;margin-right:4px;animation:markerPulse 2s infinite"></span>' : ''}${p.wk}</span></td>
       <td>${p.date}</td>
       <td><span class="tag ${tagClass}">${phaseNames[p.phase]}</span></td>
       <td><span class="km-val">${p.km}</span></td>
@@ -1376,6 +1560,32 @@ function renderWeekTable() {
       <td>${statusHTML}</td>
     `;
     tbody.appendChild(tr);
+
+    // Mobile card
+    const card = document.createElement('div');
+    card.className = `plan-card${isCurrent ? ' current-plan' : ''}${p.recovery ? ' recovery-plan' : ''}`;
+    card.style.borderLeftColor = phaseColors[p.phase];
+    card.innerHTML = `
+      <div class="plan-card-left">
+        <div class="plan-card-wk" style="color:${phaseColors[p.phase]}">${p.wk}</div>
+        <div class="plan-card-km">${p.km} km</div>
+        <div style="font-size:1.2rem">${phaseEmoji[p.phase]}</div>
+      </div>
+      <div class="plan-card-right">
+        <div class="plan-card-top">
+          <div>
+            <div class="plan-card-focus">${p.focus}</div>
+            <div class="plan-card-date">${p.date} &middot; <span class="tag ${tagClass}" style="font-size:0.55rem">${phaseNames[p.phase]}</span></div>
+          </div>
+          ${statusCard ? `<div class="plan-card-status">${statusCard}</div>` : ''}
+        </div>
+        <div class="plan-card-details">
+          <div class="plan-card-lr">🏃‍♂️ Long: ${p.longRun} km</div>
+        </div>
+        <div class="plan-card-workout">${p.key}</div>
+      </div>
+    `;
+    planCardsEl.appendChild(card);
   });
 }
 
@@ -1651,36 +1861,57 @@ function renderCurrentWeek() {
 
   const progressPct = totalPlanned > 0 ? Math.min(100, Math.round(totalDone / totalPlanned * 100)) : 0;
   const phaseNames = {base:'Base',build:'Build',peak:'Peak',taper:'Taper',race:'Race'};
+  const phaseEmoji = {base:'🏃',build:'🔨',peak:'🔥',taper:'🧘',race:'🏁'};
+  const typeEmoji = {rest:'😴',easy:'🏃',tempo:'⚡',long:'🏔️',b2b:'🔥',strength:'💪',hills:'⛰️',recovery:'🌱'};
   const tagClass = `tag-${plan.phase}`;
+
+  const weekEndDate = new Date(weekStart.getTime() + 6*864e5);
 
   let html = `
     <div class="cw-header">
-      <h3>Week ${currentWeekNum}: ${plan.focus} <span class="tag ${tagClass}" style="margin-left:8px;vertical-align:middle">${phaseNames[plan.phase]}</span></h3>
-      <div class="cw-meta">${weekStart.toLocaleDateString('nl-NL', {day:'numeric',month:'long'})} — ${new Date(weekStart.getTime() + 6*864e5).toLocaleDateString('nl-NL', {day:'numeric',month:'long'})}</div>
+      <div class="cw-title-row">
+        <span class="cw-week-badge">WK ${currentWeekNum}/23</span>
+        <h3>${plan.focus}</h3>
+        <span class="tag ${tagClass}">${phaseNames[plan.phase]}</span>
+      </div>
+      <div class="cw-meta">${weekStart.toLocaleDateString('nl-NL', {day:'numeric',month:'long'})} — ${weekEndDate.toLocaleDateString('nl-NL', {day:'numeric',month:'long'})}</div>
     </div>
-    <div class="cw-progress">
-      <div style="font-size:0.7rem;color:var(--text-muted);min-width:60px">Voortgang</div>
-      <div class="cw-progress-bar"><div class="cw-progress-fill" style="width:${progressPct}%"></div></div>
-      <div class="cw-progress-text">${Math.round(totalDone)} / ${totalPlanned} km</div>
+    <div class="cw-summary">
+      <div class="cw-progress-info">
+        <div class="cw-progress-label">
+          <span>${Math.round(totalDone)} km gelopen</span>
+          <span>${totalPlanned} km doel</span>
+        </div>
+        <div class="cw-progress-bar"><div class="cw-progress-fill" style="width:${progressPct}%"></div></div>
+      </div>
+      <div style="text-align:center">
+        <div class="cw-progress-pct">${progressPct}%</div>
+        <div class="cw-progress-pct-label">Voltooid</div>
+      </div>
     </div>
     <div class="cw-days">
   `;
 
   dayStatuses.forEach(d => {
     const statusClass = d.completed ? 'done' : d.isToday ? 'today' : '';
-    const statusIcon = d.completed ? '<div class="cw-day-status completed">&#10003;</div>' :
-                       d.isToday ? '<div class="cw-day-status today-dot"></div>' :
-                       d.isPast && d.km > 0 ? '<div class="cw-day-status pending"></div>' : '';
+    const emoji = typeEmoji[d.type] || '🏃';
 
     html += `
       <div class="cw-day ${statusClass}">
-        <div class="cw-day-name">${d.day}</div>
-        <div class="cw-day-date">${d.dateStr}</div>
-        <div class="cw-day-type ${d.type}">${d.label}</div>
-        <div class="cw-day-desc">${d.desc}</div>
-        <div class="cw-day-km">
-          ${d.km > 0 ? d.km + ' km' : '—'}
-          ${d.actualKm > 0 ? '<span class="actual">&#10003; ' + d.actualKm + ' km</span>' : ''}
+        <div class="cw-day-left">
+          <div class="cw-day-name">${d.day}</div>
+          <div class="cw-day-date">${d.dateStr}</div>
+        </div>
+        <div class="cw-day-center">
+          <div class="cw-day-type-row">
+            <span class="cw-day-emoji">${emoji}</span>
+            <span class="cw-day-type ${d.type}">${d.label}</span>
+          </div>
+          <div class="cw-day-desc">${d.desc}</div>
+        </div>
+        <div class="cw-day-right">
+          <div class="cw-day-km${d.km === 0 ? ' zero' : ''}">${d.km > 0 ? d.km + ' km' : '—'}</div>
+          ${d.actualKm > 0 ? `<div class="cw-actual-badge">&#10003; ${d.actualKm} km</div>` : ''}
         </div>
       </div>
     `;
