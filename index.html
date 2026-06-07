@@ -679,6 +679,117 @@ body {
   color: white;
 }
 
+/* Sparkline & chart cards */
+.sparkline-wrap {
+  height: 120px;
+  position: relative;
+}
+.sparkline-wrap svg { width: 100%; height: 100%; }
+.sparkline-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+.sparkline-stats .spark-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.zone-chart-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 120px;
+}
+.zone-donut { flex-shrink: 0; }
+.zone-donut svg { width: 100px; height: 100px; }
+.zone-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.zone-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+}
+.zone-dot {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.zone-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.zone-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.zone-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* Intensity indicator (replaces emoji) */
+.intensity-dots {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.intensity-dot {
+  width: 4px;
+  height: 12px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.08);
+}
+.intensity-dot.active { background: var(--cyan); }
+.intensity-dot.active.med { background: var(--amber); }
+.intensity-dot.active.high { background: var(--terra-light); }
+.intensity-dot.active.max { background: var(--rose); }
+
+/* Mini volume bar for plan cards */
+.plan-minibar {
+  height: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.plan-minibar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s;
+}
+
+/* Progress ring SVG */
+.cw-ring-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.cw-ring-wrap svg {
+  transform: rotate(-90deg);
+}
+.cw-ring-label {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 /* Current Week Detail */
 .cw-header {
   display: flex;
@@ -1082,7 +1193,7 @@ body {
 
 <div class="app">
   <header class="hero">
-    <div class="hero-badge">&#127963; Ultra X Morocco 2026</div>
+    <div class="hero-badge">Ultra X Morocco 2026</div>
     <h1>Training Dashboard</h1>
     <div class="tagline">100km in 2 etappes &mdash; 14 & 15 november</div>
   </header>
@@ -1123,8 +1234,29 @@ body {
           <div class="stat-item"><div class="sv" style="color:var(--rose)">100</div><div class="sl">Totaal km</div></div>
           <div class="stat-item"><div class="sv" style="color:var(--amber)">2</div><div class="sl">Etappes</div></div>
           <div class="stat-item"><div class="sv" style="color:var(--terra-light)">~50</div><div class="sl">km/dag</div></div>
-          <div class="stat-item"><div class="sv" style="color:var(--emerald)">&#127796;</div><div class="sl">Woestijn</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--emerald)">35&#176;C</div><div class="sl">Gem. temp</div></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trend Charts -->
+  <div class="section" data-section="overview" style="margin-top:16px">
+    <div class="grid">
+      <div class="card col-4">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Pace Trend (3 mnd)</h2>
+        <div id="paceTrendChart" class="sparkline-wrap"></div>
+      </div>
+      <div class="card col-4">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Weekvolume Trend</h2>
+        <div id="volumeTrendChart" class="sparkline-wrap"></div>
+      </div>
+      <div class="card col-4">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Hartslag Zones</h2>
+        <div id="hrZoneChart" class="zone-chart-wrap"></div>
       </div>
     </div>
   </div>
@@ -1382,12 +1514,14 @@ async function loadData() {
     document.getElementById('syncText').textContent = `Laatste sync: ${new Date(activityData.last_updated).toLocaleDateString('nl-NL')}`;
     document.getElementById('lastUpdated').textContent = `Data bijgewerkt: ${new Date(activityData.last_updated).toLocaleDateString('nl-NL', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}`;
     renderFitness();
+    renderTrendCharts();
     renderChart();
     renderWeekTable();
     renderCurrentWeek();
   } catch(e) {
     document.getElementById('syncDot').classList.add('offline');
-    document.getElementById('syncText').textContent = 'Geen data beschikbaar';
+    document.getElementById('syncText').textContent = 'Koppel Strava voor live data';
+    renderTrendCharts();
     renderChart();
     renderWeekTable();
     renderCurrentWeek();
@@ -1420,6 +1554,163 @@ function renderFitness() {
     <div class="stat-item"><div class="sv" style="color:var(--rose)">${Math.round(avgHr)}</div><div class="sl">Gem. HR</div></div>
     <div class="stat-item"><div class="sv" style="color:var(--amber)">${longestRecent.toFixed(1)}</div><div class="sl">Langste (3 mnd)</div></div>
   `;
+}
+
+function renderTrendCharts() {
+  if (!activityData) {
+    document.getElementById('paceTrendChart').innerHTML = '<div style="color:var(--text-dim);font-size:0.75rem;display:flex;align-items:center;justify-content:center;height:100%">Strava data nodig</div>';
+    document.getElementById('volumeTrendChart').innerHTML = '<div style="color:var(--text-dim);font-size:0.75rem;display:flex;align-items:center;justify-content:center;height:100%">Strava data nodig</div>';
+    document.getElementById('hrZoneChart').innerHTML = '<div style="color:var(--text-dim);font-size:0.75rem;display:flex;align-items:center;justify-content:center;height:100%">Strava data nodig</div>';
+    return;
+  }
+
+  // ── Pace Trend Sparkline ──
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  const recentActs = activityData.activities
+    .filter(a => new Date(a.datetime) >= threeMonthsAgo && a.pace_min_per_km > 3.5 && a.pace_min_per_km < 8)
+    .reverse();
+
+  if (recentActs.length > 2) {
+    const paces = recentActs.map(a => a.pace_min_per_km);
+    const minP = Math.min(...paces) - 0.2;
+    const maxP = Math.max(...paces) + 0.2;
+    const w = 300, h = 100, pad = 8;
+    const points = paces.map((p, i) => {
+      const x = pad + (i / (paces.length - 1)) * (w - 2*pad);
+      const y = pad + ((p - minP) / (maxP - minP)) * (h - 2*pad);
+      return [x, y];
+    });
+    const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]).join(' ');
+    const areaD = pathD + ` L${points[points.length-1][0]},${h} L${points[0][0]},${h} Z`;
+
+    // Moving average (7-point)
+    const ma = [];
+    for (let i = 0; i < paces.length; i++) {
+      const win = paces.slice(Math.max(0, i-3), Math.min(paces.length, i+4));
+      ma.push(win.reduce((s,v) => s+v, 0) / win.length);
+    }
+    const maPoints = ma.map((p, i) => {
+      const x = pad + (i / (ma.length - 1)) * (w - 2*pad);
+      const y = pad + ((p - minP) / (maxP - minP)) * (h - 2*pad);
+      return [x, y];
+    });
+    const maD = maPoints.map((p, i) => (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]).join(' ');
+
+    const avgP = paces.reduce((s,v) => s+v,0) / paces.length;
+    const pm = Math.floor(avgP), ps = Math.round((avgP-pm)*60);
+    const fastP = Math.min(...paces);
+    const fpm = Math.floor(fastP), fps = Math.round((fastP-fpm)*60);
+
+    document.getElementById('paceTrendChart').innerHTML = `
+      <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="paceGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--violet)" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="var(--violet)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="${areaD}" fill="url(#paceGrad)"/>
+        <path d="${pathD}" fill="none" stroke="var(--violet)" stroke-width="1" stroke-opacity="0.3"/>
+        <path d="${maD}" fill="none" stroke="var(--violet)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="${maPoints[maPoints.length-1][0]}" cy="${maPoints[maPoints.length-1][1]}" r="3" fill="var(--violet)"/>
+      </svg>
+      <div class="sparkline-stats">
+        <span>Gem: <span class="spark-val" style="color:var(--violet)">${pm}:${ps.toString().padStart(2,'0')}/km</span></span>
+        <span>Snelste: <span class="spark-val" style="color:var(--emerald)">${fpm}:${fps.toString().padStart(2,'0')}/km</span></span>
+        <span>${recentActs.length} runs</span>
+      </div>`;
+  }
+
+  // ── Volume Trend (area chart) ──
+  const recentWeeks = activityData.weekly_summaries.slice(-13);
+  if (recentWeeks.length > 2) {
+    const vols = recentWeeks.map(w => w.distance_km);
+    const maxV = Math.max(...vols, 10);
+    const w = 300, h = 100, pad = 8;
+    const points = vols.map((v, i) => {
+      const x = pad + (i / (vols.length - 1)) * (w - 2*pad);
+      const y = h - pad - (v / maxV) * (h - 2*pad);
+      return [x, y];
+    });
+    const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]).join(' ');
+    const areaD = pathD + ` L${points[points.length-1][0]},${h} L${points[0][0]},${h} Z`;
+
+    const avgV = Math.round(vols.reduce((s,v)=>s+v,0) / vols.length);
+    const peakV = Math.round(Math.max(...vols));
+    const avgY = h - pad - (avgV / maxV) * (h - 2*pad);
+
+    document.getElementById('volumeTrendChart').innerHTML = `
+      <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="volGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--cyan)" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="var(--cyan)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line x1="${pad}" y1="${avgY}" x2="${w-pad}" y2="${avgY}" stroke="var(--cyan)" stroke-width="1" stroke-dasharray="4,3" stroke-opacity="0.4"/>
+        <path d="${areaD}" fill="url(#volGrad)"/>
+        <path d="${pathD}" fill="none" stroke="var(--cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${points[points.length-1][0]}" cy="${points[points.length-1][1]}" r="3" fill="var(--cyan)"/>
+      </svg>
+      <div class="sparkline-stats">
+        <span>Gem: <span class="spark-val" style="color:var(--cyan)">${avgV} km</span></span>
+        <span>Piek: <span class="spark-val" style="color:var(--amber)">${peakV} km</span></span>
+        <span>${recentWeeks.length} wkn</span>
+      </div>`;
+  }
+
+  // ── HR Zone Distribution (donut + bars) ──
+  const hrActs = activityData.activities.filter(a => new Date(a.datetime) >= threeMonthsAgo && a.avg_hr > 0);
+  if (hrActs.length > 0) {
+    const zones = [
+      {name:'Zone 1', label:'<120', min:0, max:120, color:'var(--cyan)', count:0},
+      {name:'Zone 2', label:'120-140', min:120, max:140, color:'var(--emerald)', count:0},
+      {name:'Zone 3', label:'140-155', min:140, max:155, color:'var(--amber)', count:0},
+      {name:'Zone 4', label:'155-170', min:155, max:170, color:'var(--terra-light)', count:0},
+      {name:'Zone 5', label:'170+', min:170, max:999, color:'var(--rose)', count:0},
+    ];
+    hrActs.forEach(a => {
+      const z = zones.find(z => a.avg_hr >= z.min && a.avg_hr < z.max);
+      if (z) z.count++;
+    });
+    const total = hrActs.length;
+    const maxCount = Math.max(...zones.map(z => z.count), 1);
+
+    // Donut segments
+    const r = 38, cx = 50, cy = 50;
+    const circ = 2 * Math.PI * r;
+    let offset = 0;
+    let donutPaths = '';
+    zones.forEach(z => {
+      const pct = z.count / total;
+      if (pct > 0) {
+        const dashLen = circ * pct;
+        donutPaths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${z.color}" stroke-width="12" stroke-dasharray="${dashLen} ${circ - dashLen}" stroke-dashoffset="${-offset}" stroke-opacity="0.85"/>`;
+        offset += dashLen;
+      }
+    });
+
+    let legendHTML = zones.map(z => {
+      const pct = Math.round(z.count / total * 100);
+      const barW = z.count / maxCount * 100;
+      return `<div class="zone-row">
+        <div class="zone-dot" style="background:${z.color}"></div>
+        <span style="min-width:38px;font-size:0.65rem;color:var(--text-muted)">${z.label}</span>
+        <div class="zone-bar-bg"><div class="zone-bar-fill" style="width:${barW}%;background:${z.color}"></div></div>
+        <span class="zone-pct">${pct}%</span>
+      </div>`;
+    }).join('');
+
+    document.getElementById('hrZoneChart').innerHTML = `
+      <div class="zone-donut">
+        <svg viewBox="0 0 100 100" style="transform:rotate(-90deg)">
+          ${donutPaths}
+          <text x="50" y="50" text-anchor="middle" dominant-baseline="central" fill="var(--text)" font-size="14" font-weight="700" font-family="JetBrains Mono" style="transform:rotate(90deg);transform-origin:center">${Math.round(hrActs.reduce((s,a)=>s+a.avg_hr,0)/total)}</text>
+        </svg>
+      </div>
+      <div class="zone-legend">${legendHTML}</div>`;
+  }
 }
 
 function renderChart() {
@@ -1512,7 +1803,7 @@ function renderWeekTable() {
 
   const phaseNames = {base:'Base',build:'Build',peak:'Peak',taper:'Taper',race:'Race'};
   const phaseColors = {base:'var(--cyan)',build:'var(--violet)',peak:'var(--terra-light)',taper:'var(--emerald)',race:'var(--rose)'};
-  const phaseEmoji = {base:'🏃',build:'🔨',peak:'🔥',taper:'🧘',race:'🏁'};
+  const phaseIcon = {base:'B',build:'BU',peak:'PK',taper:'TP',race:'R'};
 
   PLAN.forEach((p, i) => {
     const tagClass = `tag-${p.phase}`;
@@ -1569,7 +1860,7 @@ function renderWeekTable() {
       <div class="plan-card-left">
         <div class="plan-card-wk" style="color:${phaseColors[p.phase]}">${p.wk}</div>
         <div class="plan-card-km">${p.km} km</div>
-        <div style="font-size:1.2rem">${phaseEmoji[p.phase]}</div>
+        <div style="font-size:0.55rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">km</div>
       </div>
       <div class="plan-card-right">
         <div class="plan-card-top">
@@ -1580,9 +1871,10 @@ function renderWeekTable() {
           ${statusCard ? `<div class="plan-card-status">${statusCard}</div>` : ''}
         </div>
         <div class="plan-card-details">
-          <div class="plan-card-lr">🏃‍♂️ Long: ${p.longRun} km</div>
+          <div class="plan-card-lr">Long: ${p.longRun} km</div>
         </div>
         <div class="plan-card-workout">${p.key}</div>
+        <div class="plan-minibar"><div class="plan-minibar-fill" style="width:${Math.round(p.km / 100 * 100)}%;background:${phaseColors[p.phase]}"></div></div>
       </div>
     `;
     planCardsEl.appendChild(card);
@@ -1861,9 +2153,31 @@ function renderCurrentWeek() {
 
   const progressPct = totalPlanned > 0 ? Math.min(100, Math.round(totalDone / totalPlanned * 100)) : 0;
   const phaseNames = {base:'Base',build:'Build',peak:'Peak',taper:'Taper',race:'Race'};
-  const phaseEmoji = {base:'🏃',build:'🔨',peak:'🔥',taper:'🧘',race:'🏁'};
-  const typeEmoji = {rest:'😴',easy:'🏃',tempo:'⚡',long:'🏔️',b2b:'🔥',strength:'💪',hills:'⛰️',recovery:'🌱'};
   const tagClass = `tag-${plan.phase}`;
+  // Intensity levels per type (1-5 dots)
+  const typeIntensity = {rest:0,easy:2,tempo:3,long:4,b2b:5,strength:2,hills:4,recovery:1};
+  const intensityLevel = (n) => n <= 2 ? '' : n <= 3 ? ' med' : n <= 4 ? ' high' : ' max';
+
+  function makeIntensityDots(type) {
+    const level = typeIntensity[type] || 0;
+    if (level === 0) return '';
+    let dots = '';
+    for (let i = 0; i < 5; i++) {
+      dots += `<div class="intensity-dot${i < level ? ' active' + intensityLevel(level) : ''}"></div>`;
+    }
+    return `<div class="intensity-dots">${dots}</div>`;
+  }
+
+  function makeProgressRing(pct, size, stroke) {
+    const r = (size - stroke) / 2;
+    const circ = 2 * Math.PI * r;
+    const offset = circ * (1 - pct / 100);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg)">
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${stroke}"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="url(#ringGrad)" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" style="transition:stroke-dashoffset 1s ease"/>
+      <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--terra)"/><stop offset="100%" stop-color="var(--amber)"/></linearGradient></defs>
+    </svg>`;
+  }
 
   const weekEndDate = new Date(weekStart.getTime() + 6*864e5);
 
@@ -1884,9 +2198,10 @@ function renderCurrentWeek() {
         </div>
         <div class="cw-progress-bar"><div class="cw-progress-fill" style="width:${progressPct}%"></div></div>
       </div>
-      <div style="text-align:center">
-        <div class="cw-progress-pct">${progressPct}%</div>
-        <div class="cw-progress-pct-label">Voltooid</div>
+      <div class="cw-ring-wrap">
+        ${makeProgressRing(progressPct, 64, 5)}
+        <div style="font-family:'JetBrains Mono';font-size:0.85rem;font-weight:700;color:var(--terra-light);margin-top:-44px;position:relative">${progressPct}%</div>
+        <div class="cw-ring-label" style="margin-top:16px">voltooid</div>
       </div>
     </div>
     <div class="cw-days">
@@ -1894,7 +2209,6 @@ function renderCurrentWeek() {
 
   dayStatuses.forEach(d => {
     const statusClass = d.completed ? 'done' : d.isToday ? 'today' : '';
-    const emoji = typeEmoji[d.type] || '🏃';
 
     html += `
       <div class="cw-day ${statusClass}">
@@ -1904,7 +2218,7 @@ function renderCurrentWeek() {
         </div>
         <div class="cw-day-center">
           <div class="cw-day-type-row">
-            <span class="cw-day-emoji">${emoji}</span>
+            ${makeIntensityDots(d.type)}
             <span class="cw-day-type ${d.type}">${d.label}</span>
           </div>
           <div class="cw-day-desc">${d.desc}</div>
