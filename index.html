@@ -1102,6 +1102,107 @@ body {
   .table-wrap { display: none; }
 }
 
+/* Manual log button */
+.cw-log-btn {
+  background: rgba(194,84,45,0.15);
+  border: 1px solid rgba(194,84,45,0.3);
+  color: var(--terra-light);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cw-log-btn:hover {
+  background: rgba(194,84,45,0.3);
+  transform: scale(1.05);
+}
+.cw-log-btn.logged {
+  background: rgba(52,211,153,0.15);
+  border-color: rgba(52,211,153,0.3);
+  color: var(--emerald);
+}
+.cw-log-btn.logged:hover {
+  background: rgba(52,211,153,0.25);
+}
+.log-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.log-input {
+  width: 52px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(194,84,45,0.3);
+  border-radius: 6px;
+  color: var(--sand-100);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 4px 6px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.log-input:focus {
+  border-color: var(--terra-light);
+}
+.log-save-btn {
+  background: var(--terra);
+  border: none;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.log-save-btn:hover { background: var(--terra-light); }
+.log-cancel-btn {
+  background: none;
+  border: 1px solid var(--text-dim);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  padding: 3px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.log-cancel-btn:hover { color: var(--text-muted); border-color: var(--text-muted); }
+.log-remove-btn {
+  background: none;
+  border: none;
+  color: var(--rose);
+  font-size: 0.6rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  opacity: 0.6;
+}
+.log-remove-btn:hover { opacity: 1; }
+
+/* Week table log controls */
+.wk-log-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.wk-log-badge.done { background: rgba(52,211,153,0.15); color: var(--emerald); }
+.wk-log-badge.partial { background: rgba(251,191,36,0.15); color: var(--amber); }
+.wk-log-badge.empty { background: rgba(194,84,45,0.1); color: var(--terra-light); border: 1px dashed rgba(194,84,45,0.3); }
+
 /* Footer */
 .footer {
   text-align: center;
@@ -1195,7 +1296,7 @@ body {
   <header class="hero">
     <div class="hero-badge">Ultra X Morocco 2026</div>
     <h1>Training Dashboard</h1>
-    <div class="tagline">100km in 2 etappes &mdash; 14 & 15 november</div>
+    <div class="tagline">110km in 2 etappes &mdash; 60 + 50 km &mdash; 14 & 15 november</div>
   </header>
 
   <div class="countdown" id="countdown"></div>
@@ -1231,9 +1332,9 @@ body {
         <div class="card-glow"></div>
         <h2><span class="dot"></span> Race Profiel</h2>
         <div class="stats-grid">
-          <div class="stat-item"><div class="sv" style="color:var(--rose)">100</div><div class="sl">Totaal km</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--rose)">110</div><div class="sl">Totaal km</div></div>
           <div class="stat-item"><div class="sv" style="color:var(--amber)">2</div><div class="sl">Etappes</div></div>
-          <div class="stat-item"><div class="sv" style="color:var(--terra-light)">~50</div><div class="sl">km/dag</div></div>
+          <div class="stat-item"><div class="sv" style="color:var(--terra-light)">60/50</div><div class="sl">km dag 1/2</div></div>
           <div class="stat-item"><div class="sv" style="color:var(--emerald)">35&#176;C</div><div class="sl">Gem. temp</div></div>
         </div>
       </div>
@@ -1301,7 +1402,7 @@ body {
           <div class="phase-card" style="border-left-color:var(--terra-light)">
             <h3 style="color:var(--terra-light)">Peak</h3>
             <div class="p-dates">Wk 13-18 &middot; 30 aug — 11 okt</div>
-            <div class="p-desc">Piekvolume 75-85 km. Race-simulaties 40+30 km. Voedingsstrategie.</div>
+            <div class="p-desc">Piekvolume 80-90 km. Race-simulaties 45+28 tot 50+32 km. Voedingsstrategie.</div>
           </div>
           <div class="phase-card" style="border-left-color:var(--emerald)">
             <h3 style="color:var(--emerald)">Taper</h3>
@@ -1327,6 +1428,7 @@ body {
         <div class="sync-status">
           <span class="sync-dot" id="syncDot"></span>
           <span id="syncText">Data wordt geladen...</span>
+          <span style="margin-left:auto;font-size:0.65rem;color:var(--text-dim)">Klik op trainingen om voortgang te loggen</span>
         </div>
         <div class="chart-wrap">
           <div class="volume-chart" id="volumeChart"></div>
@@ -1426,8 +1528,8 @@ body {
           <div class="milestone"><div class="ms-month" style="background:rgba(34,211,238,0.15);color:var(--cyan)">JUN</div><div class="ms-text"><strong>50+ km/week</strong> bereiken. Long run naar 28 km. Basis leggen.</div></div>
           <div class="milestone"><div class="ms-month" style="background:rgba(167,139,250,0.15);color:var(--violet)">JUL</div><div class="ms-text">Eerste <strong>back-to-back</strong> weekend (25+20 km). Begin hittetraining.</div></div>
           <div class="milestone"><div class="ms-month" style="background:rgba(167,139,250,0.15);color:var(--violet)">AUG</div><div class="ms-text"><strong>70+ km/week</strong>. B2B 30+20 km. Voedingsstrategie verfijnen.</div></div>
-          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">SEP</div><div class="ms-text">Race-simulatie: <strong>40+35 km</strong> weekend. Piekweek 80+ km.</div></div>
-          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">OKT</div><div class="ms-text">Laatste simulatie <strong>45+40 km</strong>. Uitrusting klaar. Start taper.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">SEP</div><div class="ms-text">Race-simulatie: <strong>45+28 km</strong> weekend. Piekweek 88+ km.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">OKT</div><div class="ms-text">Laatste simulatie <strong>50+32 km</strong>. Uitrusting klaar. Start taper.</div></div>
           <div class="milestone"><div class="ms-month" style="background:rgba(251,113,133,0.15);color:var(--rose)">NOV</div><div class="ms-text">Fris aan de start. <strong>RACE DAY 14 & 15 november!</strong></div></div>
         </div>
       </div>
@@ -1435,7 +1537,7 @@ body {
   </div>
 
   <footer class="footer">
-    Trainingsplan op basis van Strava data &middot; <a href="https://www.strava.com/athletes/93623983" target="_blank">Strava profiel</a> &middot; Ultra X Morocco 2026 &middot; Felix
+    Ultra X Morocco 2026 &middot; 110 km (60+50) &middot; <a href="https://www.strava.com/athletes/93623983" target="_blank">Strava profiel</a> &middot; Felix
     <div id="lastUpdated" style="margin-top:4px"></div>
   </footer>
 </div>
@@ -1470,17 +1572,62 @@ const PLAN = [
   {wk:11,date:'18 aug',phase:'build',km:72,longRun:35,key:'Voedingsstrategie oefenen op long run',focus:'Voeding testen',recovery:false},
   {wk:12,date:'25 aug',phase:'build',km:75,longRun:38,key:'B2B (38+22) + mentale training',focus:'Piekaanloop',recovery:false},
   {wk:13,date:'1 sep',phase:'peak',km:60,longRun:28,key:'Recovery + race gear testen',focus:'Herstelweek',recovery:true},
-  {wk:14,date:'8 sep',phase:'peak',km:78,longRun:40,key:'Race simulatie #1: 40+25 km weekend',focus:'Simulatie 1',recovery:false},
-  {wk:15,date:'15 sep',phase:'peak',km:82,longRun:42,key:'Piekweek: 42+25 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
+  {wk:14,date:'8 sep',phase:'peak',km:82,longRun:45,key:'Race simulatie #1: 45+28 km weekend',focus:'Simulatie 1',recovery:false},
+  {wk:15,date:'15 sep',phase:'peak',km:88,longRun:48,key:'Piekweek: 48+28 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
   {wk:16,date:'22 sep',phase:'peak',km:60,longRun:25,key:'Recovery — easy runs + sauna',focus:'Herstelweek',recovery:true},
-  {wk:17,date:'29 sep',phase:'peak',km:82,longRun:45,key:'Race simulatie #2: 45+30 km + race-voeding',focus:'Simulatie 2',recovery:false},
-  {wk:18,date:'6 okt',phase:'peak',km:75,longRun:38,key:'Laatste grote week: 38+25 + gear finaal',focus:'Laatste peak',recovery:false},
+  {wk:17,date:'29 sep',phase:'peak',km:90,longRun:50,key:'Race simulatie #2: 50+32 km + race-voeding',focus:'Simulatie 2',recovery:false},
+  {wk:18,date:'6 okt',phase:'peak',km:80,longRun:42,key:'Laatste grote week: 42+28 + gear finaal',focus:'Laatste peak',recovery:false},
   {wk:19,date:'13 okt',phase:'taper',km:55,longRun:25,key:'Volume -30% — easy runs + strides',focus:'Afbouw start',recovery:false},
   {wk:20,date:'20 okt',phase:'taper',km:45,longRun:20,key:'Volume -45% — focus slaap & voeding',focus:'Dieper afbouwen',recovery:false},
   {wk:21,date:'27 okt',phase:'taper',km:35,longRun:16,key:'Lichte runs + strides. Packing.',focus:'Race voorbereiding',recovery:false},
   {wk:22,date:'3 nov',phase:'taper',km:25,longRun:10,key:'Shakeout runs. Mentale visualisatie.',focus:'Laatste rust',recovery:false},
-  {wk:23,date:'10 nov',phase:'race',km:100,longRun:50,key:'Ma-Wo shakeout 3-5 km. Do rust. Vr-Za RACE!',focus:'RACE DAY!',recovery:false},
+  {wk:23,date:'10 nov',phase:'race',km:110,longRun:60,key:'Ma-Wo shakeout 3-5 km. Do rust. Vr 60 km + Za 50 km RACE!',focus:'RACE DAY!',recovery:false},
 ];
+
+// ─── MANUAL LOG (localStorage) ───
+const LOG_KEY = 'ultra-x-training-log';
+
+function getManualLog() {
+  try {
+    return JSON.parse(localStorage.getItem(LOG_KEY)) || {};
+  } catch(e) { return {}; }
+}
+
+function saveManualLog(log) {
+  localStorage.setItem(LOG_KEY, JSON.stringify(log));
+}
+
+function logWorkout(dateStr, km) {
+  const log = getManualLog();
+  if (km > 0) {
+    log[dateStr] = { km: Math.round(km * 10) / 10, logged: new Date().toISOString() };
+  } else {
+    delete log[dateStr];
+  }
+  saveManualLog(log);
+  renderCurrentWeek();
+  renderWeekTable();
+  renderChart();
+}
+
+function getLoggedKm(dateStr) {
+  const log = getManualLog();
+  return log[dateStr] ? log[dateStr].km : 0;
+}
+
+function getWeekLoggedKm(weekNum) {
+  const log = getManualLog();
+  let total = 0;
+  const weekStart = new Date(PLAN_START);
+  weekStart.setDate(weekStart.getDate() + (weekNum - 1) * 7);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(weekStart);
+    d.setDate(d.getDate() + i);
+    const ds = d.toISOString().split('T')[0];
+    if (log[ds]) total += log[ds].km;
+  }
+  return total;
+}
 
 // ─── COUNTDOWN ───
 function updateCountdown() {
@@ -1520,7 +1667,7 @@ async function loadData() {
     renderCurrentWeek();
   } catch(e) {
     document.getElementById('syncDot').classList.add('offline');
-    document.getElementById('syncText').textContent = 'Koppel Strava voor live data';
+    document.getElementById('syncText').textContent = 'Log je trainingen handmatig via de knoppen hieronder';
     renderTrendCharts();
     renderChart();
     renderWeekTable();
@@ -1810,26 +1957,29 @@ function renderWeekTable() {
     const isCurrent = i === currentWeekIdx;
     const weekDate = getWeekDate(p.wk);
 
-    // Status
+    // Status: combine Strava data + manual log
     let statusHTML = '';
     let statusCard = '';
+    const manualWeekKm = getWeekLoggedKm(p.wk);
     if (weekDate) {
       const actual = actualByWeek[weekDate];
-      if (actual && actual.distance_km > 0) {
-        const pct = Math.round(actual.distance_km / p.km * 100);
+      const stravaKm = actual && actual.distance_km > 0 ? actual.distance_km : 0;
+      const totalKm = manualWeekKm > 0 ? manualWeekKm : stravaKm;
+      if (totalKm > 0) {
+        const pct = Math.round(totalKm / p.km * 100);
         if (pct >= 90) {
-          statusHTML = '<span class="check done">&#10003;</span>';
-          statusCard = '<span class="actual-badge" style="background:rgba(52,211,153,0.15);color:var(--emerald);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700">&#10003; Done</span>';
+          statusHTML = `<span class="check done">&#10003;</span> <span style="font-size:0.6rem;color:var(--emerald)">${Math.round(totalKm)} km</span>`;
+          statusCard = `<span class="actual-badge" style="background:rgba(52,211,153,0.15);color:var(--emerald);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700">&#10003; ${Math.round(totalKm)} km</span>`;
         } else if (pct >= 50) {
-          statusHTML = `<span class="check partial">${pct}%</span>`;
-          statusCard = `<span style="background:rgba(251,191,36,0.15);color:var(--amber);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700">${pct}%</span>`;
+          statusHTML = `<span class="check partial">${pct}%</span> <span style="font-size:0.6rem;color:var(--amber)">${Math.round(totalKm)} km</span>`;
+          statusCard = `<span style="background:rgba(251,191,36,0.15);color:var(--amber);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700">${pct}% · ${Math.round(totalKm)} km</span>`;
         } else {
-          statusHTML = `<span style="font-size:0.7rem;color:var(--text-dim)">${actual.distance_km.toFixed(0)} km</span>`;
+          statusHTML = `<span style="font-size:0.7rem;color:var(--text-dim)">${Math.round(totalKm)} km</span>`;
           statusCard = statusHTML;
         }
       }
     }
-    if (i > currentWeekIdx) {
+    if (i > currentWeekIdx && manualWeekKm === 0) {
       statusHTML = '<span style="font-size:0.7rem;color:var(--text-dim)">—</span>';
       statusCard = '';
     }
@@ -1874,7 +2024,7 @@ function renderWeekTable() {
           <div class="plan-card-lr">Long: ${p.longRun} km</div>
         </div>
         <div class="plan-card-workout">${p.key}</div>
-        <div class="plan-minibar"><div class="plan-minibar-fill" style="width:${Math.round(p.km / 100 * 100)}%;background:${phaseColors[p.phase]}"></div></div>
+        <div class="plan-minibar"><div class="plan-minibar-fill" style="width:${Math.round(p.km / 110 * 100)}%;background:${phaseColors[p.phase]}"></div></div>
       </div>
     `;
     planCardsEl.appendChild(card);
@@ -2015,8 +2165,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 12 km aan race-effort.',km:12},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht + sauna.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Mentaal voorbereiden op simulatie.',km:7},
-    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #1: 40 km met race-voeding en gear.',km:40},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2 simulatie: 25 km op vermoeide benen. Dit is het!',km:25},
+    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #1: 45 km met race-voeding en gear. Dag 1 oefenen.',km:45},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2 simulatie: 28 km op vermoeide benen. Dit is het!',km:28},
   ],
   15: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rust na simulatie. Extra slaap.',km:0},
@@ -2024,8 +2174,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run met progressie. Piekweek!',km:12},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + kracht.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Voorbereiden op MAX weekend.',km:7},
-    {day:'Za',type:'long',label:'Long Run',desc:'PIEKWEEK: 42 km — langste trainingsrun voor de race.',km:42},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 25 km. Push through! Mentale grenzen verleggen.',km:25},
+    {day:'Za',type:'long',label:'Long Run',desc:'PIEKWEEK: 48 km — langste trainingsrun voor de race.',km:48},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 28 km. Push through! Mentale grenzen verleggen.',km:28},
   ],
   16: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Recovery week na piektraining.',km:0},
@@ -2042,8 +2192,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 10 km. Scherp blijven.',km:10},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + lichte kracht.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Alles klaarzetten voor weekend.',km:7},
-    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #2: 45 km met volledige race-setup.',km:45},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2: 30 km op vermoeide benen. Laatste grote test!',km:30},
+    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #2: 50 km met volledige race-setup. Dag 1 simulatie.',km:50},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2: 32 km op vermoeide benen. Laatste grote test!',km:32},
   ],
   18: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rust na laatste grote simulatie.',km:0},
@@ -2051,8 +2201,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Laatste tempo run voor taper. 8 km @ threshold.',km:10},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + laatste zware krachttraining.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run.',km:8},
-    {day:'Za',type:'long',label:'Long Run',desc:'Laatste lange run: 38 km. Geniet ervan!',km:38},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Laatste B2B: 25 km. Daarna begint taper.',km:25},
+    {day:'Za',type:'long',label:'Long Run',desc:'Laatste lange run: 42 km. Geniet ervan!',km:42},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Laatste B2B: 28 km. Daarna begint taper.',km:28},
   ],
   19: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Start taper. Volume gaat omlaag.',km:0},
@@ -2095,8 +2245,8 @@ const WEEKLY_DETAILS = {
     {day:'Di',type:'easy',label:'Shakeout',desc:'Shakeout 3 km. Acclimatiseer. Check routeinfo.',km:3},
     {day:'Wo',type:'rest',label:'Rust',desc:'Volledige rust. Hydrateer. Mentale focus.',km:0},
     {day:'Do',type:'rest',label:'Rust',desc:'Rust. Gear klaarzetten. Vroeg slapen.',km:0},
-    {day:'Vr',type:'long',label:'RACE D1',desc:'RACE DAG 1: ~50 km door de Sahara. YOU GOT THIS!',km:50},
-    {day:'Za',type:'b2b',label:'RACE D2',desc:'RACE DAG 2: ~50 km. Finish strong. Je hebt hiervoor getraind!',km:50},
+    {day:'Vr',type:'long',label:'RACE D1',desc:'RACE DAG 1: 60 km door de Sahara. De langste etappe. YOU GOT THIS!',km:60},
+    {day:'Za',type:'b2b',label:'RACE D2',desc:'RACE DAG 2: 50 km. Finish strong. Je hebt hiervoor getraind!',km:50},
     {day:'Zo',type:'rest',label:'Feest!',desc:'Je hebt het gedaan! Herstel, vier het, en wees trots.',km:0},
   ],
 };
@@ -2120,17 +2270,22 @@ function renderCurrentWeek() {
   const dayOfWeek = now.getDay(); // 0=Sun
   const todayIdx = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // 0=Mon
 
-  // Check actual runs from Strava data
+  // Check actual runs from Strava data + manual log
   const actualByDate = {};
   if (activityData) {
     activityData.activities.forEach(a => {
-      if (!actualByDate[a.date]) actualByDate[a.date] = {km: 0, runs: 0};
+      if (!actualByDate[a.date]) actualByDate[a.date] = {km: 0, runs: 0, source: 'strava'};
       actualByDate[a.date].km += a.distance_km;
       actualByDate[a.date].runs++;
     });
   }
+  // Merge manual log (manual overrides strava for same date)
+  const manualLog = getManualLog();
+  Object.entries(manualLog).forEach(([dateStr, entry]) => {
+    actualByDate[dateStr] = { km: entry.km, runs: 1, source: 'manual' };
+  });
 
-  // Calculate progress
+  // Calculate progress (strava + manual log merged)
   let totalPlanned = days.reduce((s, d) => s + d.km, 0);
   let totalDone = 0;
   const dayStatuses = days.map((d, i) => {
@@ -2138,7 +2293,8 @@ function renderCurrentWeek() {
     dayDate.setDate(dayDate.getDate() + i);
     const dateStr = dayDate.toISOString().split('T')[0];
     const actual = actualByDate[dateStr];
-    const actualKm = actual ? actual.km : 0;
+    const loggedKm = getLoggedKm(dateStr);
+    const actualKm = loggedKm > 0 ? loggedKm : (actual ? actual.km : 0);
     if (actualKm > 0) totalDone += actualKm;
     return {
       ...d,
@@ -2209,9 +2365,15 @@ function renderCurrentWeek() {
 
   dayStatuses.forEach(d => {
     const statusClass = d.completed ? 'done' : d.isToday ? 'today' : '';
+    const isoDate = d.date.toISOString().split('T')[0];
+    const manualKm = getLoggedKm(isoDate);
+    const hasManual = manualKm > 0;
+    const displayActual = hasManual ? manualKm : d.actualKm;
+    const isCompleted = displayActual > 0 && (d.km === 0 || displayActual >= d.km * 0.5);
+    const finalClass = isCompleted ? 'done' : d.isToday ? 'today' : '';
 
     html += `
-      <div class="cw-day ${statusClass}">
+      <div class="cw-day ${finalClass}">
         <div class="cw-day-left">
           <div class="cw-day-name">${d.day}</div>
           <div class="cw-day-date">${d.dateStr}</div>
@@ -2224,8 +2386,14 @@ function renderCurrentWeek() {
           <div class="cw-day-desc">${d.desc}</div>
         </div>
         <div class="cw-day-right">
-          <div class="cw-day-km${d.km === 0 ? ' zero' : ''}">${d.km > 0 ? d.km + ' km' : '—'}</div>
-          ${d.actualKm > 0 ? `<div class="cw-actual-badge">&#10003; ${d.actualKm} km</div>` : ''}
+          <div class="cw-day-km${d.km === 0 && !displayActual ? ' zero' : ''}">${d.km > 0 ? d.km + ' km' : '—'}</div>
+          ${displayActual > 0 ? `<div class="cw-actual-badge">&#10003; ${displayActual} km</div>` : ''}
+          <div id="log-slot-${isoDate}">
+            ${displayActual > 0
+              ? `<button class="cw-log-btn logged" onclick="showLogInput('${isoDate}', ${d.km})">Wijzig</button>`
+              : `<button class="cw-log-btn" onclick="showLogInput('${isoDate}', ${d.km})">${d.km > 0 ? 'Log' : 'Log km'}</button>`
+            }
+          </div>
         </div>
       </div>
     `;
@@ -2233,6 +2401,34 @@ function renderCurrentWeek() {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+// ─── MANUAL LOG UI ───
+function showLogInput(dateStr, plannedKm) {
+  const slot = document.getElementById(`log-slot-${dateStr}`);
+  if (!slot) return;
+  const currentKm = getLoggedKm(dateStr);
+  const defaultVal = currentKm > 0 ? currentKm : plannedKm > 0 ? plannedKm : '';
+  slot.innerHTML = `
+    <div class="log-input-wrap">
+      <input type="number" class="log-input" id="log-val-${dateStr}" value="${defaultVal}" step="0.1" min="0" placeholder="km"
+             onkeydown="if(event.key==='Enter'){saveLogFromInput('${dateStr}');}">
+      <button class="log-save-btn" onclick="saveLogFromInput('${dateStr}')">OK</button>
+      <button class="log-cancel-btn" onclick="renderCurrentWeek()">X</button>
+      ${currentKm > 0 ? `<button class="log-remove-btn" onclick="logWorkout('${dateStr}', 0)" title="Verwijder">&#128465;</button>` : ''}
+    </div>
+  `;
+  const inp = document.getElementById(`log-val-${dateStr}`);
+  if (inp) { inp.focus(); inp.select(); }
+}
+
+function saveLogFromInput(dateStr) {
+  const inp = document.getElementById(`log-val-${dateStr}`);
+  if (!inp) return;
+  const km = parseFloat(inp.value);
+  if (!isNaN(km) && km > 0) {
+    logWorkout(dateStr, km);
+  }
 }
 
 // ─── MOBILE NAV ───
