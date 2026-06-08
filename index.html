@@ -1102,6 +1102,56 @@ body {
   .table-wrap { display: none; }
 }
 
+/* Clickable week rows */
+.week-table tbody tr { cursor: pointer; }
+.week-table tbody tr:hover { background: rgba(194,84,45,0.06); }
+.week-table tbody tr.selected-row { background: rgba(194,84,45,0.12); box-shadow: inset 3px 0 0 var(--terra-light); }
+.plan-card { cursor: pointer; }
+.plan-card.selected-card {
+  background: linear-gradient(135deg, rgba(194,84,45,0.12), rgba(194,84,45,0.04));
+  box-shadow: 0 0 24px rgba(194,84,45,0.1);
+  border-left-color: var(--terra-light) !important;
+}
+
+/* Week detail nav */
+.wk-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wk-nav-btn {
+  background: rgba(194,84,45,0.12);
+  border: 1px solid rgba(194,84,45,0.25);
+  color: var(--terra-light);
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.wk-nav-btn:hover { background: rgba(194,84,45,0.25); transform: scale(1.1); }
+.wk-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+.wk-current-btn {
+  background: none;
+  border: 1px solid rgba(34,211,238,0.3);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.wk-current-btn:hover { background: rgba(34,211,238,0.1); }
+
 /* Manual log button */
 .cw-log-btn {
   background: rgba(194,84,45,0.15);
@@ -1362,12 +1412,12 @@ body {
     </div>
   </div>
 
-  <!-- Current Week Detail -->
+  <!-- Week Detail (shows current week by default, any week when clicked) -->
   <div class="section" data-section="overview" style="margin-top:16px">
     <div class="grid">
       <div class="card col-12" id="currentWeekCard">
         <div class="card-glow"></div>
-        <h2><span class="dot"></span> Deze Week</h2>
+        <h2><span class="dot"></span> <span id="weekDetailTitle">Deze Week</span></h2>
         <div id="currentWeekContent">
           <div style="color:var(--text-dim);font-size:0.8rem">Weekplan wordt geladen...</div>
         </div>
@@ -1469,6 +1519,10 @@ body {
         </div>
         <!-- Mobile: card view -->
         <div class="plan-cards" id="planCards"></div>
+        <!-- Inline week detail (shown when a week is clicked in the plan view) -->
+        <div id="planWeekDetail" style="margin-top:20px;display:none">
+          <div id="planWeekDetailContent"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1989,6 +2043,9 @@ function renderWeekTable() {
     if (isCurrent) tr.className = 'current';
     else if (p.phase === 'race') tr.className = 'race-row';
     else if (p.recovery) tr.className = 'recovery';
+    tr.style.cursor = 'pointer';
+    tr.title = `Klik voor week ${p.wk} details`;
+    tr.addEventListener('click', () => selectWeekFromPlan(p.wk));
 
     tr.innerHTML = `
       <td><span class="wk-num">${isCurrent ? '<span style="display:inline-block;width:6px;height:6px;background:var(--terra-light);border-radius:50%;margin-right:4px;animation:markerPulse 2s infinite"></span>' : ''}${p.wk}</span></td>
@@ -2006,6 +2063,7 @@ function renderWeekTable() {
     const card = document.createElement('div');
     card.className = `plan-card${isCurrent ? ' current-plan' : ''}${p.recovery ? ' recovery-plan' : ''}`;
     card.style.borderLeftColor = phaseColors[p.phase];
+    card.addEventListener('click', () => selectWeekFromPlan(p.wk));
     card.innerHTML = `
       <div class="plan-card-left">
         <div class="plan-card-wk" style="color:${phaseColors[p.phase]}">${p.wk}</div>
@@ -2039,7 +2097,15 @@ function getWeekDate(weekNum) {
   return monday.toISOString().split('T')[0];
 }
 
-// ─── CURRENT WEEK DETAIL ───
+// ─── WEEK DETAIL ───
+let selectedWeek = null; // null = current week, or 1-23
+
+function getCurrentWeekNum() {
+  const now = new Date();
+  const weekIdx = Math.floor((now - PLAN_START) / (7 * 864e5));
+  return Math.max(1, Math.min(23, weekIdx + 1));
+}
+
 // Detailed daily plans for each training week
 const WEEKLY_DETAILS = {
   1: [
@@ -2252,10 +2318,24 @@ const WEEKLY_DETAILS = {
 };
 
 function renderCurrentWeek() {
-  const container = document.getElementById('currentWeekContent');
-  const now = new Date();
-  const weekIdx = Math.floor((now - PLAN_START) / (7 * 864e5));
-  const currentWeekNum = Math.max(1, Math.min(23, weekIdx + 1));
+  const weekNum = selectedWeek || getCurrentWeekNum();
+  renderWeekDetail(weekNum, 'currentWeekContent');
+  // Update title
+  const titleEl = document.getElementById('weekDetailTitle');
+  if (titleEl) {
+    const curWk = getCurrentWeekNum();
+    if (weekNum === curWk) {
+      titleEl.textContent = 'Deze Week';
+    } else {
+      titleEl.textContent = `Week ${weekNum} Details`;
+    }
+  }
+}
+
+function renderWeekDetail(weekNumParam, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const currentWeekNum = weekNumParam;
 
   const plan = PLAN.find(p => p.wk === currentWeekNum);
   const days = WEEKLY_DETAILS[currentWeekNum];
@@ -2265,10 +2345,12 @@ function renderCurrentWeek() {
   }
 
   // Calculate week dates
+  const now = new Date();
   const weekStart = new Date(PLAN_START);
   weekStart.setDate(weekStart.getDate() + (currentWeekNum - 1) * 7);
+  const isCurrentWeek = currentWeekNum === getCurrentWeekNum();
   const dayOfWeek = now.getDay(); // 0=Sun
-  const todayIdx = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // 0=Mon
+  const todayIdx = isCurrentWeek ? (dayOfWeek === 0 ? 6 : dayOfWeek - 1) : -1; // 0=Mon, -1=none
 
   // Check actual runs from Strava data + manual log
   const actualByDate = {};
@@ -2337,12 +2419,18 @@ function renderCurrentWeek() {
 
   const weekEndDate = new Date(weekStart.getTime() + 6*864e5);
 
+  const curWk = getCurrentWeekNum();
   let html = `
     <div class="cw-header">
       <div class="cw-title-row">
-        <span class="cw-week-badge">WK ${currentWeekNum}/23</span>
+        <div class="wk-nav">
+          <button class="wk-nav-btn" onclick="navigateWeek(${currentWeekNum - 1})" ${currentWeekNum <= 1 ? 'disabled' : ''} title="Vorige week">&#9664;</button>
+          <span class="cw-week-badge">WK ${currentWeekNum}/23</span>
+          <button class="wk-nav-btn" onclick="navigateWeek(${currentWeekNum + 1})" ${currentWeekNum >= 23 ? 'disabled' : ''} title="Volgende week">&#9654;</button>
+        </div>
         <h3>${plan.focus}</h3>
         <span class="tag ${tagClass}">${phaseNames[plan.phase]}</span>
+        ${currentWeekNum !== curWk ? `<button class="wk-current-btn" onclick="navigateWeek(${curWk})">&#8592; Huidige week</button>` : ''}
       </div>
       <div class="cw-meta">${weekStart.toLocaleDateString('nl-NL', {day:'numeric',month:'long'})} — ${weekEndDate.toLocaleDateString('nl-NL', {day:'numeric',month:'long'})}</div>
     </div>
@@ -2401,6 +2489,55 @@ function renderCurrentWeek() {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+// ─── WEEK NAVIGATION ───
+function navigateWeek(weekNum) {
+  if (weekNum < 1 || weekNum > 23) return;
+  selectedWeek = weekNum === getCurrentWeekNum() ? null : weekNum;
+  renderCurrentWeek();
+  // Also update the inline plan detail
+  updatePlanWeekDetail(weekNum);
+  // Highlight the selected row in the table
+  highlightWeekRow(weekNum);
+  // Scroll the week detail card into view
+  const card = document.getElementById('currentWeekCard');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function selectWeekFromPlan(weekNum) {
+  selectedWeek = weekNum === getCurrentWeekNum() ? null : weekNum;
+  renderCurrentWeek();
+  highlightWeekRow(weekNum);
+  // Show inline detail in plan section
+  updatePlanWeekDetail(weekNum);
+  // On mobile, scroll to the inline detail; on desktop, the overview section has it
+  if (window.innerWidth <= 768) {
+    const detail = document.getElementById('planWeekDetail');
+    if (detail) setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  } else {
+    const card = document.getElementById('currentWeekCard');
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function updatePlanWeekDetail(weekNum) {
+  const wrapper = document.getElementById('planWeekDetail');
+  const content = document.getElementById('planWeekDetailContent');
+  if (!wrapper || !content) return;
+  wrapper.style.display = 'block';
+  renderWeekDetail(weekNum, 'planWeekDetailContent');
+}
+
+function highlightWeekRow(weekNum) {
+  // Desktop table
+  document.querySelectorAll('.week-table tbody tr').forEach((tr, i) => {
+    tr.classList.toggle('selected-row', i === weekNum - 1);
+  });
+  // Mobile cards
+  document.querySelectorAll('.plan-card').forEach((card, i) => {
+    card.classList.toggle('selected-card', i === weekNum - 1);
+  });
 }
 
 // ─── MANUAL LOG UI ───
