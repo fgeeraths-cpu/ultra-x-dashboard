@@ -1452,7 +1452,7 @@ body {
           <div class="phase-card" style="border-left-color:var(--terra-light)">
             <h3 style="color:var(--terra-light)">Peak</h3>
             <div class="p-dates">Wk 13-18 &middot; 30 aug — 11 okt</div>
-            <div class="p-desc">Piekvolume 80-90 km. Race-simulaties 45+28 tot 50+32 km. Voedingsstrategie.</div>
+            <div class="p-desc">Piekvolume 75-80 km. Race-simulaties 38+25 km B2B. Voedingsstrategie.</div>
           </div>
           <div class="phase-card" style="border-left-color:var(--emerald)">
             <h3 style="color:var(--emerald)">Taper</h3>
@@ -1582,8 +1582,8 @@ body {
           <div class="milestone"><div class="ms-month" style="background:rgba(34,211,238,0.15);color:var(--cyan)">JUN</div><div class="ms-text"><strong>50+ km/week</strong> bereiken. Long run naar 28 km. Basis leggen.</div></div>
           <div class="milestone"><div class="ms-month" style="background:rgba(167,139,250,0.15);color:var(--violet)">JUL</div><div class="ms-text">Eerste <strong>back-to-back</strong> weekend (25+20 km). Begin hittetraining.</div></div>
           <div class="milestone"><div class="ms-month" style="background:rgba(167,139,250,0.15);color:var(--violet)">AUG</div><div class="ms-text"><strong>70+ km/week</strong>. B2B 30+20 km. Voedingsstrategie verfijnen.</div></div>
-          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">SEP</div><div class="ms-text">Race-simulatie: <strong>45+28 km</strong> weekend. Piekweek 88+ km.</div></div>
-          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">OKT</div><div class="ms-text">Laatste simulatie <strong>50+32 km</strong>. Uitrusting klaar. Start taper.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">SEP</div><div class="ms-text">Race-simulaties: <strong>38+25 km</strong> B2B weekenden. Piekweek 80 km.</div></div>
+          <div class="milestone"><div class="ms-month" style="background:rgba(232,107,58,0.15);color:var(--terra-light)">OKT</div><div class="ms-text">Laatste B2B <strong>38+22 km</strong>. Uitrusting klaar. Start taper.</div></div>
           <div class="milestone"><div class="ms-month" style="background:rgba(251,113,133,0.15);color:var(--rose)">NOV</div><div class="ms-text">Fris aan de start. <strong>RACE DAY 14 & 15 november!</strong></div></div>
         </div>
       </div>
@@ -1626,11 +1626,11 @@ const PLAN = [
   {wk:11,date:'18 aug',phase:'build',km:72,longRun:35,key:'Voedingsstrategie oefenen op long run',focus:'Voeding testen',recovery:false},
   {wk:12,date:'25 aug',phase:'build',km:75,longRun:38,key:'B2B (38+22) + mentale training',focus:'Piekaanloop',recovery:false},
   {wk:13,date:'1 sep',phase:'peak',km:60,longRun:28,key:'Recovery + race gear testen',focus:'Herstelweek',recovery:true},
-  {wk:14,date:'8 sep',phase:'peak',km:82,longRun:45,key:'Race simulatie #1: 45+28 km weekend',focus:'Simulatie 1',recovery:false},
-  {wk:15,date:'15 sep',phase:'peak',km:88,longRun:48,key:'Piekweek: 48+28 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
+  {wk:14,date:'8 sep',phase:'peak',km:75,longRun:38,key:'Race simulatie #1: 38+25 km B2B weekend',focus:'Simulatie 1',recovery:false},
+  {wk:15,date:'15 sep',phase:'peak',km:80,longRun:40,key:'Piekweek: 40+25 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
   {wk:16,date:'22 sep',phase:'peak',km:60,longRun:25,key:'Recovery — easy runs + sauna',focus:'Herstelweek',recovery:true},
-  {wk:17,date:'29 sep',phase:'peak',km:90,longRun:50,key:'Race simulatie #2: 50+32 km + race-voeding',focus:'Simulatie 2',recovery:false},
-  {wk:18,date:'6 okt',phase:'peak',km:80,longRun:42,key:'Laatste grote week: 42+28 + gear finaal',focus:'Laatste peak',recovery:false},
+  {wk:17,date:'29 sep',phase:'peak',km:78,longRun:38,key:'Race simulatie #2: 38+25 km B2B + race-voeding',focus:'Simulatie 2',recovery:false},
+  {wk:18,date:'6 okt',phase:'peak',km:75,longRun:38,key:'Laatste grote week: 38+22 B2B + gear finaal',focus:'Laatste peak',recovery:false},
   {wk:19,date:'13 okt',phase:'taper',km:55,longRun:25,key:'Volume -30% — easy runs + strides',focus:'Afbouw start',recovery:false},
   {wk:20,date:'20 okt',phase:'taper',km:45,longRun:20,key:'Volume -45% — focus slaap & voeding',focus:'Dieper afbouwen',recovery:false},
   {wk:21,date:'27 okt',phase:'taper',km:35,longRun:16,key:'Lichte runs + strides. Packing.',focus:'Race voorbereiding',recovery:false},
@@ -2231,8 +2231,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 12 km aan race-effort.',km:12},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht + sauna.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Mentaal voorbereiden op simulatie.',km:7},
-    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #1: 45 km met race-voeding en gear. Dag 1 oefenen.',km:45},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2 simulatie: 28 km op vermoeide benen. Dit is het!',km:28},
+    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #1: 38 km met race-voeding en gear. Focus op pacing.',km:38},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2 simulatie: 25 km op vermoeide benen. B2B ervaring opdoen!',km:25},
   ],
   15: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rust na simulatie. Extra slaap.',km:0},
@@ -2240,8 +2240,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run met progressie. Piekweek!',km:12},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + kracht.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Voorbereiden op MAX weekend.',km:7},
-    {day:'Za',type:'long',label:'Long Run',desc:'PIEKWEEK: 48 km — langste trainingsrun voor de race.',km:48},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 28 km. Push through! Mentale grenzen verleggen.',km:28},
+    {day:'Za',type:'long',label:'Long Run',desc:'PIEKWEEK: 40 km — langste trainingsrun voor de race.',km:40},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 25 km. Push through! Mentale grenzen verleggen.',km:25},
   ],
   16: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Recovery week na piektraining.',km:0},
@@ -2258,8 +2258,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 10 km. Scherp blijven.',km:10},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + lichte kracht.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Alles klaarzetten voor weekend.',km:7},
-    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #2: 50 km met volledige race-setup. Dag 1 simulatie.',km:50},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2: 32 km op vermoeide benen. Laatste grote test!',km:32},
+    {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #2: 38 km met volledige race-setup en voeding.',km:38},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2: 25 km op vermoeide benen. Laatste grote B2B test!',km:25},
   ],
   18: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rust na laatste grote simulatie.',km:0},
@@ -2267,8 +2267,8 @@ const WEEKLY_DETAILS = {
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Laatste tempo run voor taper. 8 km @ threshold.',km:10},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + laatste zware krachttraining.',km:7},
     {day:'Vr',type:'easy',label:'Easy',desc:'Easy run.',km:8},
-    {day:'Za',type:'long',label:'Long Run',desc:'Laatste lange run: 42 km. Geniet ervan!',km:42},
-    {day:'Zo',type:'b2b',label:'B2B',desc:'Laatste B2B: 28 km. Daarna begint taper.',km:28},
+    {day:'Za',type:'long',label:'Long Run',desc:'Laatste lange run: 38 km. Geniet ervan!',km:38},
+    {day:'Zo',type:'b2b',label:'B2B',desc:'Laatste B2B: 22 km. Daarna begint taper.',km:22},
   ],
   19: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Start taper. Volume gaat omlaag.',km:0},
