@@ -469,75 +469,63 @@ body {
   line-height: 1.5;
 }
 
-/* Chart */
-.chart-wrap {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: var(--terra) transparent;
-}
-.chart-wrap::-webkit-scrollbar { height: 4px; }
-.chart-wrap::-webkit-scrollbar-thumb { background: var(--terra); border-radius: 2px; }
-.volume-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 200px;
-  min-width: max-content;
-  padding: 0 2px 24px;
-  position: relative;
-}
-.v-bar-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 28px;
-  flex-shrink: 0;
-}
-.v-bar {
-  width: 20px;
-  border-radius: 4px 4px 1px 1px;
-  transition: all 0.3s;
-  position: relative;
-  cursor: pointer;
-  min-height: 2px;
-}
-.v-bar:hover { filter: brightness(1.3); transform: scaleY(1.05); transform-origin: bottom; }
-.v-bar-label {
-  font-size: 0.55rem;
-  color: var(--text-dim);
-  margin-top: 6px;
-  transform: rotate(-45deg);
-  white-space: nowrap;
-  transform-origin: top right;
-  width: 24px;
-  text-align: right;
-}
-.v-bar-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.55rem;
-  color: var(--text-muted);
-  margin-bottom: 3px;
-}
-.chart-tooltip {
-  display: none;
+/* ─── Road to Morocco chart ─── */
+.road-chart { position: relative; width: 100%; }
+.road-chart svg { display: block; width: 100%; height: auto; }
+.road-tip {
   position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--navy-card2);
-  border: 1px solid var(--glass-border);
-  color: var(--text);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.7rem;
-  white-space: nowrap;
-  z-index: 20;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  display: none;
   pointer-events: none;
+  background: rgba(13,18,36,0.96);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 12px;
+  padding: 9px 13px;
+  font-size: 0.72rem;
+  z-index: 30;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+  white-space: nowrap;
+  line-height: 1.7;
+  backdrop-filter: blur(10px);
 }
-.v-bar:hover .chart-tooltip { display: block; }
+.road-tip b { font-family: 'JetBrains Mono', monospace; }
+.journey-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.j-stat { display: flex; flex-direction: column; }
+.j-stat .jv {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.j-stat .jl {
+  font-size: 0.56rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  margin-top: 3px;
+  font-weight: 600;
+}
+.j-bar {
+  flex: 1 1 140px;
+  min-width: 120px;
+  height: 7px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.j-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--terra-light), var(--emerald), var(--rose));
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.structure-chart { position: relative; width: 100%; }
+.structure-chart svg { display: block; width: 100%; height: auto; }
 
 .chart-legend {
   display: flex;
@@ -955,7 +943,7 @@ body {
 }
 .cw-summary {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   gap: 16px;
   align-items: center;
   margin-bottom: 20px;
@@ -968,6 +956,28 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+.cw-minibars {
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+  padding: 0 8px;
+}
+.cw-minibar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cw-minibar {
+  width: 9px;
+  border-radius: 3px;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cw-minibar-day {
+  font-size: 0.52rem;
+  color: var(--text-dim);
+  font-weight: 600;
 }
 .cw-progress-bar {
   height: 8px;
@@ -1228,6 +1238,7 @@ body {
   .cw-day-desc { font-size: 0.72rem; }
   .cw-day-km { font-size: 0.85rem; }
   .cw-summary { grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; }
+  .cw-minibars { display: none; }
   .plan-cards { display: flex; }
   .table-wrap { display: none; }
 }
@@ -1392,15 +1403,6 @@ body {
 }
 .footer a { color: var(--terra-light); text-decoration: none; }
 
-/* Scroll hint */
-.scroll-hint {
-  display: none;
-  text-align: center;
-  font-size: 0.65rem;
-  color: var(--text-dim);
-  margin-top: 6px;
-}
-
 /* Mobile nav — floating pill */
 .mobile-nav {
   display: none;
@@ -1467,11 +1469,9 @@ body {
   .cd-num { font-size: 1.75rem; }
   .cd-label { font-size: 0.46rem; letter-spacing: 1.2px; margin-top: 6px; }
   .metric-value { font-size: 2.6rem; }
-  .scroll-hint { display: block; }
   .mobile-nav { display: block; }
   .section[data-section] { display: none; }
   .section[data-section].visible { display: block; animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  .volume-chart { height: 160px; }
   .phase-cards { grid-template-columns: 1fr 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1626,21 +1626,21 @@ body {
     <div class="grid">
       <div class="card col-12">
         <div class="card-glow"></div>
-        <h2><span class="dot"></span> Weekvolume &mdash; Gelopen + Gepland</h2>
+        <h2><span class="dot"></span> De Weg naar Marokko &mdash; 23 weken opbouw</h2>
         <div class="sync-status">
           <span class="sync-dot" id="syncDot"></span>
           <span id="syncText">Data wordt geladen...</span>
-          <span style="margin-left:auto;font-size:0.65rem;color:var(--text-dim)">Klik op trainingen om voortgang te loggen</span>
+          <span style="margin-left:auto;font-size:0.65rem;color:var(--text-dim)">Klik op een week voor details</span>
         </div>
-        <div class="chart-wrap">
-          <div class="volume-chart" id="volumeChart"></div>
-        </div>
-        <div class="scroll-hint">&#8592; Scroll voor meer &#8594;</div>
-        <div class="chart-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div> Gelopen</div>
-          <div class="legend-item"><div class="legend-dot" style="background:rgba(194,84,45,0.5)"></div> Gepland</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div> Race</div>
-        </div>
+        <div id="journeyStats" class="journey-stats"></div>
+        <div id="roadChart" class="road-chart"></div>
+        <div class="chart-legend" id="roadLegend"></div>
+      </div>
+      <div class="card col-12">
+        <div class="card-glow"></div>
+        <h2><span class="dot"></span> Weekopbouw &mdash; km per trainingstype</h2>
+        <div id="structureChart" class="structure-chart"></div>
+        <div class="chart-legend" id="structureLegend"></div>
       </div>
     </div>
   </div>
@@ -2066,77 +2066,290 @@ function renderTrendCharts() {
   }
 }
 
-function renderChart() {
-  const chart = document.getElementById('volumeChart');
-  chart.innerHTML = '';
+// ─── PLAN VISUALIZATIONS ───
+const PHASE_COLORS = { base:'#38d9f5', build:'#b49bfc', peak:'#f07a42', taper:'#3ee6a4', race:'#fb7185' };
+const PHASE_NAMES = { base:'Basis', build:'Opbouw', peak:'Piek', taper:'Taper', race:'Race' };
+const TYPE_COLORS = { easy:'#38d9f5', recovery:'#2fae8f', tempo:'#b49bfc', hills:'#d98c52', strength:'#fcc742', long:'#f07a42', b2b:'#fb7185' };
+const TYPE_NAMES = { easy:'Easy', recovery:'Herstel', tempo:'Tempo', hills:'Heuvels', strength:'Kracht', long:'Long run', b2b:'Back-to-back' };
 
-  // Historical weeks from data
-  let histWeeks = [];
+function getActualByDateMap() {
+  const byDate = {};
   if (activityData) {
-    const ws = activityData.weekly_summaries;
-    histWeeks = ws.slice(-16).map(w => ({
-      label: new Date(w.week_start).toLocaleDateString('nl-NL', {day:'numeric', month:'short'}),
-      km: w.distance_km,
-      type: 'actual'
-    }));
+    activityData.activities.forEach(a => {
+      byDate[a.date] = (byDate[a.date] || 0) + a.distance_km;
+    });
   }
+  const log = getManualLog();
+  Object.keys(log).forEach(ds => { byDate[ds] = log[ds].km; });
+  return byDate;
+}
 
-  // Planned weeks
-  const planBars = PLAN.map(p => ({
-    label: p.date,
-    km: p.km,
-    type: 'plan',
-    phase: p.phase
-  }));
+function getActualPlanWeekKm(weekNum, byDate) {
+  let total = 0;
+  const ws = new Date(PLAN_START);
+  ws.setDate(ws.getDate() + (weekNum - 1) * 7);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(ws);
+    d.setDate(d.getDate() + i);
+    const ds = d.toISOString().split('T')[0];
+    if (byDate[ds]) total += byDate[ds];
+  }
+  return total;
+}
 
-  const all = [...histWeeks, ...planBars];
-  const maxKm = Math.max(...all.map(d => d.km), 100);
+// Catmull-Rom -> cubic bezier, control-y clamped to segment range (no overshoot)
+function smoothPath(pts) {
+  if (pts.length < 2) return '';
+  let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+    const lo = Math.min(p1.y, p2.y), hi = Math.max(p1.y, p2.y);
+    const c1x = p1.x + (p2.x - p0.x) / 6, c1y = Math.max(lo, Math.min(hi, p1.y + (p2.y - p0.y) / 6));
+    const c2x = p2.x - (p3.x - p1.x) / 6, c2y = Math.max(lo, Math.min(hi, p2.y - (p3.y - p1.y) / 6));
+    d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+  }
+  return d;
+}
 
-  all.forEach(d => {
-    const group = document.createElement('div');
-    group.className = 'v-bar-group';
+function renderChart() {
+  renderJourneyStats();
+  renderRoadChart();
+  renderStructureChart();
+}
 
-    const val = document.createElement('div');
-    val.className = 'v-bar-val';
-    val.textContent = Math.round(d.km);
-    group.appendChild(val);
+function renderJourneyStats() {
+  const el = document.getElementById('journeyStats');
+  if (!el) return;
+  const totalKm = PLAN.reduce((s, p) => s + p.km, 0);
+  const curWk = getCurrentWeekNum();
+  const byDate = getActualByDateMap();
+  let doneKm = 0;
+  for (let w = 1; w <= curWk; w++) doneKm += getActualPlanWeekKm(w, byDate);
+  const pct = Math.min(100, doneKm / totalKm * 100);
+  el.innerHTML = `
+    <div class="j-stat"><div class="jv" style="color:var(--terra-light)">${totalKm.toLocaleString('nl-NL')}</div><div class="jl">km totaal schema</div></div>
+    <div class="j-stat"><div class="jv" style="color:var(--cyan)">${Math.round(doneKm)}</div><div class="jl">km gelopen</div></div>
+    <div class="j-stat"><div class="jv">${curWk}<span style="font-size:0.75rem;color:var(--text-dim)"> / 23</span></div><div class="jl">huidige week</div></div>
+    <div class="j-bar"><div class="j-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
+    <div class="j-stat"><div class="jv" style="font-size:0.95rem">${pct.toFixed(1)}%</div><div class="jl">voltooid</div></div>`;
+}
 
-    const bar = document.createElement('div');
-    bar.className = 'v-bar';
-    bar.style.height = (d.km / maxKm * 160) + 'px';
+function renderRoadChart() {
+  const container = document.getElementById('roadChart');
+  if (!container) return;
+  const mobile = window.innerWidth <= 768;
+  const W = container.clientWidth || Math.min(window.innerWidth - 60, 1140);
+  const H = mobile ? 250 : 330;
+  const m = { l: 34, r: 16, t: 34, b: 34 };
+  const maxY = 125;
+  const x = wk => m.l + (wk - 1) / 22 * (W - m.l - m.r);
+  const y = km => m.t + (1 - km / maxY) * (H - m.t - m.b);
+  const baseY = y(0);
 
-    if (d.type === 'actual') {
-      bar.style.background = 'linear-gradient(to top, rgba(34,211,238,0.6), var(--cyan))';
-    } else if (d.phase === 'race') {
-      bar.style.background = 'linear-gradient(to top, var(--rose), #ff8888)';
-    } else if (d.phase === 'base') {
-      bar.style.background = 'linear-gradient(to top, rgba(34,211,238,0.2), rgba(34,211,238,0.5))';
-    } else if (d.phase === 'build') {
-      bar.style.background = 'linear-gradient(to top, rgba(167,139,250,0.2), rgba(167,139,250,0.5))';
-    } else if (d.phase === 'peak') {
-      bar.style.background = 'linear-gradient(to top, rgba(232,107,58,0.2), rgba(232,107,58,0.5))';
-    } else {
-      bar.style.background = 'linear-gradient(to top, rgba(52,211,153,0.2), rgba(52,211,153,0.5))';
+  const planPts = PLAN.map(p => ({ x: x(p.wk), y: y(p.km), p }));
+  const lrPts = PLAN.map(p => ({ x: x(p.wk), y: y(p.longRun) }));
+
+  // Horizontal phase gradient (userSpace) — stops at phase midpoints/boundaries
+  let stops = '';
+  PLAN.forEach((p, i) => {
+    if (i === 0 || PLAN[i - 1].phase !== p.phase) {
+      const x0 = x(p.wk), x1 = x(PLAN.filter(q => q.phase === p.phase).slice(-1)[0].wk);
+      const mid = (x0 + x1) / 2;
+      stops += `<stop offset="${(mid / W * 100).toFixed(1)}%" stop-color="${PHASE_COLORS[p.phase]}"/>`;
     }
-
-    const tip = document.createElement('div');
-    tip.className = 'chart-tooltip';
-    tip.textContent = `${d.label}: ${Math.round(d.km)} km`;
-    bar.appendChild(tip);
-    group.appendChild(bar);
-
-    const lbl = document.createElement('div');
-    lbl.className = 'v-bar-label';
-    lbl.textContent = d.label;
-    group.appendChild(lbl);
-
-    chart.appendChild(group);
   });
 
-  // Scroll to end (planned)
-  const wrap = chart.parentElement;
-  setTimeout(() => wrap.scrollLeft = wrap.scrollWidth, 100);
+  const areaD = smoothPath(planPts) + ` L ${planPts[planPts.length-1].x.toFixed(1)} ${baseY} L ${planPts[0].x.toFixed(1)} ${baseY} Z`;
+
+  // Gridlines + labels
+  let grid = '';
+  [40, 80, 120].forEach(v => {
+    grid += `<line x1="${m.l}" y1="${y(v)}" x2="${W - m.r}" y2="${y(v)}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 5"/>
+      <text x="${m.l - 7}" y="${y(v) + 3}" text-anchor="end" fill="rgba(255,255,255,0.32)" font-size="9" font-family="JetBrains Mono">${v}</text>`;
+  });
+
+  // Month labels (first week of each new month)
+  let months = '', lastMonth = -1;
+  PLAN.forEach(p => {
+    const ws = new Date(PLAN_START); ws.setDate(ws.getDate() + (p.wk - 1) * 7);
+    if (ws.getMonth() !== lastMonth) {
+      lastMonth = ws.getMonth();
+      months += `<text x="${x(p.wk)}" y="${H - 4}" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Inter" font-weight="600" letter-spacing="1">${ws.toLocaleDateString('nl-NL',{month:'short'}).toUpperCase()}</text>`;
+    }
+  });
+
+  // Phase bands under axis
+  let bands = '';
+  PLAN.forEach((p, i) => {
+    if (i === 0 || PLAN[i - 1].phase !== p.phase) {
+      const last = PLAN.filter(q => q.phase === p.phase).slice(-1)[0].wk;
+      const x0 = i === 0 ? m.l : (x(p.wk) + x(p.wk - 1)) / 2;
+      const x1 = last === 23 ? W - m.r : (x(last) + x(last + 1)) / 2;
+      bands += `<rect x="${x0.toFixed(1)}" y="${baseY + 8}" width="${(x1 - x0).toFixed(1)}" height="4" rx="2" fill="${PHASE_COLORS[p.phase]}" opacity="0.55"/>`;
+    }
+  });
+
+  // Week dots (recovery = hollow, race = pulsing)
+  let dots = '';
+  planPts.forEach(pt => {
+    const c = PHASE_COLORS[pt.p.phase];
+    if (pt.p.phase === 'race') {
+      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="6" fill="${c}" opacity="0.35"><animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.35;0.05;0.35" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="${pt.x}" cy="${pt.y}" r="4.5" fill="${c}" stroke="#0d1224" stroke-width="1.5"/>`;
+    } else if (pt.p.recovery) {
+      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="3.6" fill="#0d1224" stroke="${c}" stroke-width="1.8"/>`;
+    } else {
+      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="3.2" fill="${c}" stroke="#0d1224" stroke-width="1.3"/>`;
+    }
+  });
+
+  // Annotations
+  const peak = PLAN.find(p => p.wk === 15);
+  let ann = '';
+  if (peak && !mobile) {
+    ann += `<text x="${x(15)}" y="${y(peak.km) - 14}" text-anchor="middle" fill="#f5b889" font-size="10" font-family="JetBrains Mono" font-weight="700">${peak.km} km piek</text>`;
+  }
+  ann += `<text x="${W - m.r}" y="${y(PLAN[22].km) - 12}" text-anchor="end" fill="#fb7185" font-size="${mobile ? 10 : 12}" font-family="Anton, sans-serif" letter-spacing="1.5">RACE 110K</text>`;
+
+  // NU marker (fractional week position)
+  const elapsed = (new Date() - PLAN_START) / (7 * 864e5) + 1;
+  let nu = '';
+  if (elapsed >= 1 && elapsed <= 23) {
+    const w0 = Math.floor(elapsed), frac = elapsed - w0;
+    const k0 = PLAN[w0 - 1].km, k1 = (PLAN[w0] || PLAN[22]).km;
+    const nx = x(elapsed), ny = y(k0 + (k1 - k0) * frac);
+    nu = `<line x1="${nx}" y1="${m.t - 6}" x2="${nx}" y2="${baseY}" stroke="rgba(255,255,255,0.28)" stroke-dasharray="2 4"/>
+      <circle cx="${nx}" cy="${ny}" r="4" fill="#fff" stroke="#0d1224" stroke-width="1.5"/>
+      <text x="${nx}" y="${m.t - 12}" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="Inter" font-weight="700" letter-spacing="2">NU</text>`;
+  }
+
+  // Actual line (cyan) over started weeks
+  const byDate = getActualByDateMap();
+  const curWk = getCurrentWeekNum();
+  const actPts = [];
+  for (let w = 1; w <= curWk && w <= 23; w++) {
+    const km = getActualPlanWeekKm(w, byDate);
+    if (km > 0 || actPts.length > 0) actPts.push({ x: x(w), y: y(Math.min(km, maxY)) });
+  }
+  let actual = '';
+  if (actPts.length) {
+    actual = `<path d="${smoothPath(actPts)}" fill="none" stroke="#38d9f5" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>` +
+      actPts.map(pt => `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#38d9f5" stroke="#0d1224" stroke-width="1.3"/>`).join('');
+  }
+
+  // Hover rects
+  const hovers = PLAN.map(p => {
+    const x0 = p.wk === 1 ? m.l : (x(p.wk) + x(p.wk - 1)) / 2;
+    const x1 = p.wk === 23 ? W - m.r : (x(p.wk) + x(p.wk + 1)) / 2;
+    return `<rect class="road-hover" data-wk="${p.wk}" x="${x0.toFixed(1)}" y="${m.t - 6}" width="${(x1 - x0).toFixed(1)}" height="${baseY - m.t + 6}" fill="transparent" style="cursor:pointer"/>`;
+  }).join('');
+
+  container.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+      <defs>
+        <linearGradient id="phaseGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="0">${stops}</linearGradient>
+        <linearGradient id="fadeGrad" gradientUnits="userSpaceOnUse" x1="0" y1="${m.t}" x2="0" y2="${baseY}">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0.45"/><stop offset="100%" stop-color="#fff" stop-opacity="0.02"/>
+        </linearGradient>
+        <mask id="fadeMask"><rect x="0" y="0" width="${W}" height="${H}" fill="url(#fadeGrad)"/></mask>
+      </defs>
+      ${grid}
+      <path d="${areaD}" fill="url(#phaseGrad)" mask="url(#fadeMask)"/>
+      <path d="${smoothPath(lrPts)}" fill="none" stroke="#fcc742" stroke-width="1.4" stroke-dasharray="4 5" opacity="0.65"/>
+      <path d="${smoothPath(planPts)}" fill="none" stroke="url(#phaseGrad)" stroke-width="2.6" stroke-linecap="round"/>
+      ${actual}${dots}${ann}${nu}${bands}${months}
+      ${hovers}
+    </svg>
+    <div class="road-tip" id="roadTip"></div>`;
+
+  // Legend
+  const legend = document.getElementById('roadLegend');
+  if (legend) {
+    legend.innerHTML = Object.keys(PHASE_COLORS).map(ph =>
+      `<div class="legend-item"><div class="legend-dot" style="background:${PHASE_COLORS[ph]}"></div> ${PHASE_NAMES[ph]}</div>`
+    ).join('') +
+    `<div class="legend-item"><div class="legend-dot" style="background:#38d9f5;box-shadow:0 0 6px #38d9f5"></div> Gelopen</div>
+     <div class="legend-item"><div class="legend-dot" style="background:transparent;border:1.5px dashed #fcc742"></div> Long run</div>`;
+  }
+
+  // Interaction
+  const tip = document.getElementById('roadTip');
+  container.querySelectorAll('.road-hover').forEach(r => {
+    r.addEventListener('mousemove', e => {
+      const wk = +r.dataset.wk;
+      const p = PLAN[wk - 1];
+      const act = getActualPlanWeekKm(wk, byDate);
+      tip.style.display = 'block';
+      tip.innerHTML = `<strong style="color:${PHASE_COLORS[p.phase]}">Week ${wk}</strong> · ${p.date}<br>
+        Gepland: <strong>${p.km} km</strong> · Long run ${p.longRun} km${act > 0 ? `<br>Gelopen: <strong style="color:#38d9f5">${Math.round(act * 10) / 10} km</strong>` : ''}<br>
+        <span style="color:var(--text-dim)">${p.key}</span>`;
+      const rect = container.getBoundingClientRect();
+      let tx = e.clientX - rect.left + 14;
+      const tw = tip.offsetWidth || 180;
+      if (tx + tw > rect.width - 4) tx = e.clientX - rect.left - tw - 14;
+      tip.style.left = Math.max(0, tx) + 'px';
+      tip.style.top = Math.max(0, e.clientY - rect.top - 30) + 'px';
+    });
+    r.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+    r.addEventListener('click', () => { if (window.innerWidth > 768) navigateWeek(+r.dataset.wk); });
+  });
 }
+
+function renderStructureChart() {
+  const container = document.getElementById('structureChart');
+  if (!container) return;
+  const mobile = window.innerWidth <= 768;
+  const W = container.clientWidth || Math.min(window.innerWidth - 60, 1140);
+  const H = mobile ? 190 : 240;
+  const m = { l: 34, r: 10, t: 12, b: 22 };
+  const maxY = 125;
+  const stackOrder = ['easy', 'recovery', 'tempo', 'hills', 'strength', 'long', 'b2b'];
+  const innerW = W - m.l - m.r;
+  const slot = innerW / 23;
+  const barW = Math.max(6, slot * 0.62);
+  const y = km => m.t + (1 - km / maxY) * (H - m.t - m.b);
+
+  let grid = '';
+  [40, 80, 120].forEach(v => {
+    grid += `<line x1="${m.l}" y1="${y(v)}" x2="${W - m.r}" y2="${y(v)}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 5"/>
+      <text x="${m.l - 7}" y="${y(v) + 3}" text-anchor="end" fill="rgba(255,255,255,0.32)" font-size="9" font-family="JetBrains Mono">${v}</text>`;
+  });
+
+  let bars = '', labels = '';
+  for (let wk = 1; wk <= 23; wk++) {
+    const days = WEEKLY_DETAILS[wk] || [];
+    const sums = {};
+    days.forEach(d => { if (d.km > 0) sums[d.type] = (sums[d.type] || 0) + d.km; });
+    const cx = m.l + slot * (wk - 0.5);
+    const bx = cx - barW / 2;
+    let acc = 0;
+    stackOrder.forEach(t => {
+      if (!sums[t]) return;
+      const y1 = y(acc + sums[t]), y0 = y(acc);
+      bars += `<rect x="${bx.toFixed(1)}" y="${y1.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(0.5, y0 - y1).toFixed(1)}" rx="1.5" fill="${TYPE_COLORS[t]}" opacity="0.88"><title>Week ${wk} — ${TYPE_NAMES[t]}: ${sums[t]} km</title></rect>`;
+      acc += sums[t];
+    });
+    if (wk % 2 === 1) {
+      labels += `<text x="${cx}" y="${H - 6}" text-anchor="middle" fill="rgba(255,255,255,0.32)" font-size="8.5" font-family="JetBrains Mono">${wk}</text>`;
+    }
+  }
+
+  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${grid}${bars}${labels}</svg>`;
+
+  const legend = document.getElementById('structureLegend');
+  if (legend) {
+    legend.innerHTML = stackOrder.map(t =>
+      `<div class="legend-item"><div class="legend-dot" style="background:${TYPE_COLORS[t]}"></div> ${TYPE_NAMES[t]}</div>`
+    ).join('');
+  }
+}
+
+// Re-render charts on resize (debounced)
+let _chartResizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(_chartResizeTimer);
+  _chartResizeTimer = setTimeout(renderChart, 180);
+});
 
 function renderWeekTable() {
   const tbody = document.getElementById('weekBody');
@@ -2594,6 +2807,15 @@ function renderWeekDetail(weekNumParam, containerId) {
         </div>
         <div class="cw-progress-bar"><div class="cw-progress-fill" style="width:${progressPct}%"></div></div>
       </div>
+      <div class="cw-minibars">
+        ${(() => {
+          const mx = Math.max(...days.map(d => d.km), 1);
+          return days.map(d => `<div class="cw-minibar-col" title="${d.day}: ${d.km > 0 ? d.km + ' km ' + (d.label || '') : 'rust'}">
+            <div class="cw-minibar" style="height:${Math.max(d.km > 0 ? 4 : 2, d.km / mx * 38)}px;background:${d.km > 0 ? (TYPE_COLORS[d.type] || 'rgba(255,255,255,0.25)') : 'rgba(255,255,255,0.1)'}"></div>
+            <div class="cw-minibar-day">${d.day.charAt(0)}</div>
+          </div>`).join('');
+        })()}
+      </div>
       <div class="cw-ring-wrap">
         ${makeProgressRing(progressPct, 64, 5)}
         <div style="font-family:'JetBrains Mono';font-size:0.85rem;font-weight:700;color:var(--terra-light);margin-top:-44px;position:relative">${progressPct}%</div>
@@ -2730,6 +2952,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
       const show = s.dataset.section === section;
       s.classList.toggle('visible', show);
     });
+    if (section === 'volume') renderChart();
   });
 });
 // Init: show overview on mobile
