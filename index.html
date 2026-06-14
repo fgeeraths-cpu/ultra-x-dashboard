@@ -7,38 +7,47 @@
 <title>Ultra X Morocco — Training Dashboard</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏜️</text></svg>">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Unbounded:wght@400;600;700;800;900&family=Anton&display=swap');
 
 :root {
-  --sand-50: #fdf8f0;
-  --sand-100: #f7e9cf;
-  --sand-200: #ecd0a2;
-  --sand-400: #dba35c;
-  --sand-600: #b8762e;
-  --terra: #c2542d;
-  --terra-light: #f07a42;
-  --sunset: #ff9a4d;
-  --navy: #090d1c;
-  --navy-light: #11182d;
-  --navy-card: #161e38;
-  --navy-card2: #1c2545;
-  --sky: #1e3a6e;
-  --blue: #3b82f6;
-  --cyan: #38d9f5;
-  --emerald: #3ee6a4;
-  --violet: #b49bfc;
-  --rose: #fb7185;
-  --amber: #fcc742;
-  --text: #f3efe6;
-  --text-muted: #93a0bb;
-  --text-dim: #5d6981;
-  --border: rgba(255,255,255,0.06);
-  --glass: rgba(20,28,54,0.62);
-  --glass-border: rgba(255,255,255,0.09);
-  --glow-terra: rgba(240,122,66,0.35);
-  --glow-cyan: rgba(56,217,245,0.2);
-  --display: 'Anton', 'Inter', sans-serif;
-  --r-card: 22px;
+  --sand-50: #fff6e9;
+  --sand-100: #ffe7c2;
+  --sand-200: #ffce91;
+  --sand-400: #ffae5c;
+  --sand-600: #e07a2e;
+  --terra: #ff4d6d;
+  --terra-light: #ff7a3d;
+  --sunset: #ffb24d;
+  --magenta: #ff2d95;
+  --hotpink: #ff5fa6;
+  --coral: #ff6b3d;
+  --gold: #ffd089;
+  --purple: #b06bff;
+  --acid: #b6ff3d;
+  --aqua: #2ce8e8;
+  --navy: #0a0717;
+  --navy-light: #140d29;
+  --navy-card: #1a1233;
+  --navy-card2: #241844;
+  --sky: #2a1e5e;
+  --blue: #5b6bff;
+  --cyan: #2ce8e8;
+  --emerald: #3ef0a0;
+  --violet: #c77dff;
+  --rose: #ff4fa3;
+  --amber: #ffd23d;
+  --text: #fdefff;
+  --text-muted: #b79fc9;
+  --text-dim: #7a6a93;
+  --border: rgba(255,255,255,0.07);
+  --glass: rgba(26,18,51,0.6);
+  --glass-border: rgba(255,255,255,0.1);
+  --glow-terra: rgba(255,45,149,0.4);
+  --glow-cyan: rgba(44,232,232,0.25);
+  --grad-heat: linear-gradient(120deg, #ffd089 0%, #ff7a3d 32%, #ff2d95 64%, #b06bff 100%);
+  --grad-heat-2: linear-gradient(135deg, #ffce91, #ff5fa6 55%, #b06bff);
+  --display: 'Unbounded', 'Inter', sans-serif;
+  --r-card: 26px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,7 +57,9 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background:
-    linear-gradient(180deg, #070b18 0%, #0a101f 34%, #131229 62%, #2b1726 82%, #3d1c20 100%);
+    radial-gradient(1200px 720px at 72% -8%, rgba(176,107,255,0.2), transparent 60%),
+    radial-gradient(1000px 640px at 8% 112%, rgba(255,45,149,0.18), transparent 60%),
+    linear-gradient(180deg, #08060f 0%, #120a26 32%, #241043 60%, #3a1340 82%, #4a132f 100%);
   background-attachment: fixed;
   color: var(--text);
   min-height: 100vh;
@@ -70,9 +81,9 @@ body {
   position: absolute;
   top: -50%; left: -50%; right: -50%; bottom: -50%;
   background:
-    radial-gradient(ellipse 70% 45% at 25% 18%, rgba(56,217,245,0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 40% at 78% 30%, rgba(180,155,252,0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 90% 55% at 50% 105%, rgba(240,122,66,0.13) 0%, transparent 55%);
+    radial-gradient(ellipse 70% 45% at 22% 16%, rgba(44,232,232,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 40% at 80% 26%, rgba(176,107,255,0.11) 0%, transparent 55%),
+    radial-gradient(ellipse 95% 55% at 50% 106%, rgba(255,45,149,0.22) 0%, transparent 58%);
   animation: bgDrift 36s ease-in-out infinite alternate;
 }
 @keyframes bgDrift {
@@ -89,9 +100,9 @@ body {
   transform: translateX(-50%);
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(255,154,77,0.22) 0%,
-    rgba(240,122,66,0.12) 35%,
-    rgba(194,84,45,0.05) 58%,
+    rgba(255,178,77,0.3) 0%,
+    rgba(255,107,61,0.18) 32%,
+    rgba(255,45,149,0.1) 55%,
     transparent 72%);
   animation: sunBreath 9s ease-in-out infinite alternate;
 }
@@ -176,38 +187,38 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, rgba(240,122,66,0.16), rgba(240,122,66,0.06));
-  border: 1px solid rgba(240,122,66,0.35);
+  background: linear-gradient(135deg, rgba(255,45,149,0.24), rgba(176,107,255,0.13));
+  border: 1px solid rgba(255,95,166,0.45);
   border-radius: 999px;
-  padding: 7px 18px;
+  padding: 8px 20px;
   font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--sunset);
+  font-weight: 800;
+  color: #ffd9ec;
   text-transform: uppercase;
   letter-spacing: 3px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 24px rgba(240,122,66,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+  margin-bottom: 22px;
+  box-shadow: 0 0 30px rgba(255,45,149,0.28), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -7px 16px rgba(255,45,149,0.14);
 }
 .hero-badge::before {
   content: '';
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--sunset);
-  box-shadow: 0 0 8px var(--sunset);
+  background: var(--magenta);
+  box-shadow: 0 0 10px var(--magenta);
   animation: syncPulse 2.4s infinite;
 }
 .hero h1 {
   font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(2.6rem, 8vw, 5rem);
+  font-weight: 900;
+  font-size: clamp(2.4rem, 7.6vw, 4.9rem);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  line-height: 0.96;
-  background: linear-gradient(180deg, var(--sand-50) 0%, var(--sand-100) 38%, var(--sunset) 78%, var(--terra) 100%);
+  letter-spacing: -1px;
+  line-height: 0.92;
+  background: linear-gradient(135deg, #fff6e9 0%, #ffce91 26%, #ff6b3d 52%, #ff2d95 76%, #b06bff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 6px 30px rgba(240,122,66,0.25));
+  filter: drop-shadow(0 4px 26px rgba(255,45,149,0.38));
 }
 .hero .tagline {
   color: var(--text-muted);
@@ -229,16 +240,17 @@ body {
   gap: 6px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1px;
-  color: var(--sand-100);
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--glass-border);
+  color: #ffe7c2;
+  background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.16);
   border-radius: 999px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 6px 16px rgba(0,0,0,0.3);
 }
-.hero-chip b { color: var(--sunset); font-weight: 700; }
+.hero-chip b { color: var(--hotpink); font-weight: 800; }
 
 @keyframes fadeUp {
   0% { opacity: 0; transform: translateY(18px); }
@@ -255,31 +267,34 @@ body {
   animation: fadeUp 0.7s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .cd-block {
-  background: linear-gradient(165deg, rgba(28,37,69,0.85), rgba(16,22,44,0.85));
+  background: linear-gradient(160deg, rgba(46,28,82,0.85), rgba(26,15,46,0.85));
   backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  padding: 18px 26px 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+  padding: 20px 28px 16px;
   text-align: center;
-  min-width: 96px;
+  min-width: 100px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07);
+  box-shadow: 0 16px 38px rgba(120,20,90,0.3), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -10px 22px rgba(255,45,149,0.09);
 }
 .cd-block::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--sunset), transparent);
+  height: 3px;
+  background: var(--grad-heat);
 }
 .cd-num {
   font-family: var(--display);
-  font-size: 2.6rem;
-  font-weight: 400;
-  color: var(--sand-50);
+  font-size: 2.3rem;
+  font-weight: 800;
   line-height: 1;
-  text-shadow: 0 0 30px rgba(240,122,66,0.3);
+  background: linear-gradient(180deg, #fff6e9, #ffb24d 58%, #ff5fa6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(255,107,61,0.42));
   font-variant-numeric: tabular-nums;
 }
 .cd-label {
@@ -304,27 +319,27 @@ body {
 
 /* ─── Cards ─── */
 .card {
-  background: linear-gradient(165deg, rgba(26,35,66,0.72), rgba(14,20,40,0.72));
+  background: linear-gradient(160deg, rgba(36,24,68,0.66), rgba(18,11,33,0.7));
   backdrop-filter: blur(24px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255,255,255,0.09);
   border-radius: var(--r-card);
   padding: 26px;
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: 0 14px 36px rgba(40,10,50,0.35), inset 0 1px 0 rgba(255,255,255,0.07);
 }
 .card:hover {
-  border-color: rgba(255,255,255,0.14);
-  transform: translateY(-2px);
-  box-shadow: 0 18px 44px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  border-color: rgba(255,95,166,0.32);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 52px rgba(120,20,90,0.42), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 .card-glow {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--sunset), transparent);
-  opacity: 0.6;
+  height: 2px;
+  background: var(--grad-heat);
+  opacity: 0.9;
 }
 .card h2 {
   font-size: 0.72rem;
@@ -338,10 +353,10 @@ body {
   gap: 9px;
 }
 .card h2 .dot {
-  width: 7px; height: 7px;
+  width: 8px; height: 8px;
   border-radius: 50%;
-  background: var(--sunset);
-  box-shadow: 0 0 10px rgba(240,122,66,0.7);
+  background: var(--magenta);
+  box-shadow: 0 0 12px var(--magenta);
 }
 
 /* Metric cards */
@@ -350,11 +365,11 @@ body {
 }
 .metric-value {
   font-family: var(--display);
-  font-size: 3.2rem;
-  font-weight: 400;
+  font-size: 2.9rem;
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: 1px;
-  text-shadow: 0 0 40px rgba(240,122,66,0.35);
+  letter-spacing: -1px;
+  filter: drop-shadow(0 0 26px rgba(255,45,149,0.32));
   font-variant-numeric: tabular-nums;
 }
 .metric-label {
@@ -601,11 +616,11 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.tag-base { background: rgba(34,211,238,0.15); color: var(--cyan); }
-.tag-build { background: rgba(167,139,250,0.15); color: var(--violet); }
-.tag-peak { background: rgba(232,107,58,0.15); color: var(--terra-light); }
-.tag-taper { background: rgba(52,211,153,0.15); color: var(--emerald); }
-.tag-race { background: rgba(251,113,133,0.15); color: var(--rose); }
+.tag-base { background: rgba(44,232,232,0.16); color: var(--cyan); }
+.tag-build { background: rgba(199,125,255,0.16); color: var(--violet); }
+.tag-peak { background: rgba(255,122,61,0.16); color: var(--terra-light); }
+.tag-taper { background: rgba(62,240,160,0.15); color: var(--emerald); }
+.tag-race { background: rgba(255,79,163,0.18); color: var(--rose); }
 .km-val {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
@@ -989,7 +1004,7 @@ body {
 .cw-progress-fill {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, var(--terra), var(--terra-light), var(--amber));
+  background: linear-gradient(90deg, var(--terra-light), var(--magenta), var(--purple));
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .cw-progress-label {
@@ -1412,13 +1427,13 @@ body {
   transform: translateX(-50%);
   width: calc(100% - 28px);
   max-width: 440px;
-  background: rgba(13,18,36,0.82);
+  background: rgba(26,15,46,0.85);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 999px;
   z-index: 100;
   padding: 6px 10px;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+  box-shadow: 0 16px 44px rgba(80,12,60,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
   margin-bottom: env(safe-area-inset-bottom);
 }
 .mobile-nav-inner {
@@ -1444,9 +1459,9 @@ body {
   letter-spacing: 0.5px;
 }
 .nav-btn.active {
-  color: var(--sand-50);
-  background: linear-gradient(135deg, rgba(240,122,66,0.35), rgba(194,84,45,0.22));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 18px rgba(240,122,66,0.18);
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255,45,149,0.42), rgba(176,107,255,0.28));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 0 22px rgba(255,45,149,0.28);
 }
 .nav-btn .nav-icon { font-size: 1.15rem; }
 
@@ -2067,9 +2082,9 @@ function renderTrendCharts() {
 }
 
 // ─── PLAN VISUALIZATIONS ───
-const PHASE_COLORS = { base:'#38d9f5', build:'#b49bfc', peak:'#f07a42', taper:'#3ee6a4', race:'#fb7185' };
+const PHASE_COLORS = { base:'#2ce8e8', build:'#c77dff', peak:'#ff7a3d', taper:'#3ef0a0', race:'#ff4fa3' };
 const PHASE_NAMES = { base:'Basis', build:'Opbouw', peak:'Piek', taper:'Taper', race:'Race' };
-const TYPE_COLORS = { easy:'#38d9f5', recovery:'#2fae8f', tempo:'#b49bfc', hills:'#d98c52', strength:'#fcc742', long:'#f07a42', b2b:'#fb7185' };
+const TYPE_COLORS = { easy:'#2ce8e8', recovery:'#3ef0a0', tempo:'#c77dff', hills:'#ff9a4d', strength:'#ffd23d', long:'#ff7a3d', b2b:'#ff4fa3' };
 const TYPE_NAMES = { easy:'Easy', recovery:'Herstel', tempo:'Tempo', hills:'Heuvels', strength:'Kracht', long:'Long run', b2b:'Back-to-back' };
 
 function getActualByDateMap() {
@@ -2195,11 +2210,11 @@ function renderRoadChart() {
     const c = PHASE_COLORS[pt.p.phase];
     if (pt.p.phase === 'race') {
       dots += `<circle cx="${pt.x}" cy="${pt.y}" r="6" fill="${c}" opacity="0.35"><animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.35;0.05;0.35" dur="2s" repeatCount="indefinite"/></circle>
-        <circle cx="${pt.x}" cy="${pt.y}" r="4.5" fill="${c}" stroke="#0d1224" stroke-width="1.5"/>`;
+        <circle cx="${pt.x}" cy="${pt.y}" r="4.5" fill="${c}" stroke="#140d29" stroke-width="1.5"/>`;
     } else if (pt.p.recovery) {
-      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="3.6" fill="#0d1224" stroke="${c}" stroke-width="1.8"/>`;
+      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="3.6" fill="#140d29" stroke="${c}" stroke-width="1.8"/>`;
     } else {
-      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="3.2" fill="${c}" stroke="#0d1224" stroke-width="1.3"/>`;
+      dots += `<circle cx="${pt.x}" cy="${pt.y}" r="3.2" fill="${c}" stroke="#140d29" stroke-width="1.3"/>`;
     }
   });
 
@@ -2207,9 +2222,9 @@ function renderRoadChart() {
   const peak = PLAN.find(p => p.wk === 15);
   let ann = '';
   if (peak && !mobile) {
-    ann += `<text x="${x(15)}" y="${y(peak.km) - 14}" text-anchor="middle" fill="#f5b889" font-size="10" font-family="JetBrains Mono" font-weight="700">${peak.km} km piek</text>`;
+    ann += `<text x="${x(15)}" y="${y(peak.km) - 14}" text-anchor="middle" fill="#ffce91" font-size="10" font-family="JetBrains Mono" font-weight="700">${peak.km} km piek</text>`;
   }
-  ann += `<text x="${W - m.r}" y="${y(PLAN[22].km) - 12}" text-anchor="end" fill="#fb7185" font-size="${mobile ? 10 : 12}" font-family="Anton, sans-serif" letter-spacing="1.5">RACE 110K</text>`;
+  ann += `<text x="${W - m.r}" y="${y(PLAN[22].km) - 12}" text-anchor="end" fill="#ff4fa3" font-size="${mobile ? 11 : 13}" font-family="Unbounded, sans-serif" font-weight="800" letter-spacing="0.5">RACE 110K</text>`;
 
   // NU marker (fractional week position)
   const elapsed = (new Date() - PLAN_START) / (7 * 864e5) + 1;
@@ -2219,7 +2234,7 @@ function renderRoadChart() {
     const k0 = PLAN[w0 - 1].km, k1 = (PLAN[w0] || PLAN[22]).km;
     const nx = x(elapsed), ny = y(k0 + (k1 - k0) * frac);
     nu = `<line x1="${nx}" y1="${m.t - 6}" x2="${nx}" y2="${baseY}" stroke="rgba(255,255,255,0.28)" stroke-dasharray="2 4"/>
-      <circle cx="${nx}" cy="${ny}" r="4" fill="#fff" stroke="#0d1224" stroke-width="1.5"/>
+      <circle cx="${nx}" cy="${ny}" r="4" fill="#fff" stroke="#140d29" stroke-width="1.5"/>
       <text x="${nx}" y="${m.t - 12}" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="Inter" font-weight="700" letter-spacing="2">NU</text>`;
   }
 
@@ -2233,8 +2248,8 @@ function renderRoadChart() {
   }
   let actual = '';
   if (actPts.length) {
-    actual = `<path d="${smoothPath(actPts)}" fill="none" stroke="#38d9f5" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>` +
-      actPts.map(pt => `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#38d9f5" stroke="#0d1224" stroke-width="1.3"/>`).join('');
+    actual = `<path d="${smoothPath(actPts)}" fill="none" stroke="#2ce8e8" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>` +
+      actPts.map(pt => `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#2ce8e8" stroke="#140d29" stroke-width="1.3"/>`).join('');
   }
 
   // Hover rects
@@ -2252,11 +2267,15 @@ function renderRoadChart() {
           <stop offset="0%" stop-color="#fff" stop-opacity="0.45"/><stop offset="100%" stop-color="#fff" stop-opacity="0.02"/>
         </linearGradient>
         <mask id="fadeMask"><rect x="0" y="0" width="${W}" height="${H}" fill="url(#fadeGrad)"/></mask>
+        <filter id="rcGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
       </defs>
       ${grid}
       <path d="${areaD}" fill="url(#phaseGrad)" mask="url(#fadeMask)"/>
-      <path d="${smoothPath(lrPts)}" fill="none" stroke="#fcc742" stroke-width="1.4" stroke-dasharray="4 5" opacity="0.65"/>
-      <path d="${smoothPath(planPts)}" fill="none" stroke="url(#phaseGrad)" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="${smoothPath(lrPts)}" fill="none" stroke="#ffd23d" stroke-width="1.5" stroke-dasharray="4 5" opacity="0.6"/>
+      <path d="${smoothPath(planPts)}" fill="none" stroke="url(#phaseGrad)" stroke-width="3" stroke-linecap="round" filter="url(#rcGlow)"/>
       ${actual}${dots}${ann}${nu}${bands}${months}
       ${hovers}
     </svg>
@@ -2268,8 +2287,8 @@ function renderRoadChart() {
     legend.innerHTML = Object.keys(PHASE_COLORS).map(ph =>
       `<div class="legend-item"><div class="legend-dot" style="background:${PHASE_COLORS[ph]}"></div> ${PHASE_NAMES[ph]}</div>`
     ).join('') +
-    `<div class="legend-item"><div class="legend-dot" style="background:#38d9f5;box-shadow:0 0 6px #38d9f5"></div> Gelopen</div>
-     <div class="legend-item"><div class="legend-dot" style="background:transparent;border:1.5px dashed #fcc742"></div> Long run</div>`;
+    `<div class="legend-item"><div class="legend-dot" style="background:#2ce8e8;box-shadow:0 0 6px #2ce8e8"></div> Gelopen</div>
+     <div class="legend-item"><div class="legend-dot" style="background:transparent;border:1.5px dashed #ffd23d"></div> Long run</div>`;
   }
 
   // Interaction
@@ -2281,7 +2300,7 @@ function renderRoadChart() {
       const act = getActualPlanWeekKm(wk, byDate);
       tip.style.display = 'block';
       tip.innerHTML = `<strong style="color:${PHASE_COLORS[p.phase]}">Week ${wk}</strong> · ${p.date}<br>
-        Gepland: <strong>${p.km} km</strong> · Long run ${p.longRun} km${act > 0 ? `<br>Gelopen: <strong style="color:#38d9f5">${Math.round(act * 10) / 10} km</strong>` : ''}<br>
+        Gepland: <strong>${p.km} km</strong> · Long run ${p.longRun} km${act > 0 ? `<br>Gelopen: <strong style="color:#2ce8e8">${Math.round(act * 10) / 10} km</strong>` : ''}<br>
         <span style="color:var(--text-dim)">${p.key}</span>`;
       const rect = container.getBoundingClientRect();
       let tx = e.clientX - rect.left + 14;
