@@ -1252,6 +1252,46 @@ body {
   }
   .cw-day-desc { font-size: 0.72rem; }
   .cw-day-km { font-size: 0.85rem; }
+  /* Finger-friendly manual-log controls on mobile */
+  .cw-day-right { gap: 6px; }
+  .cw-log-btn {
+    font-size: 0.72rem;
+    padding: 9px 16px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .log-input-wrap {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .log-input {
+    width: 62px;
+    min-height: 40px;
+    font-size: 16px; /* 16px stops iOS from auto-zooming on focus */
+    padding: 6px 8px;
+  }
+  .log-save-btn {
+    font-size: 0.8rem;
+    padding: 0 14px;
+    min-height: 40px;
+    min-width: 46px;
+  }
+  .log-cancel-btn {
+    font-size: 0.85rem;
+    padding: 0 12px;
+    min-height: 40px;
+    min-width: 40px;
+  }
+  .log-remove-btn {
+    font-size: 1rem;
+    padding: 0 8px;
+    min-height: 40px;
+    min-width: 40px;
+    opacity: 0.8;
+  }
   .cw-summary { grid-template-columns: 1fr auto; gap: 12px; padding: 14px 16px; }
   .cw-minibars { display: none; }
   .plan-cards { display: flex; }
@@ -1824,23 +1864,23 @@ const PLAN = [
   {wk:4,date:'30 jun',phase:'base',km:42,longRun:22,key:'Recovery week — alle runs easy pace',focus:'Herstelweek',recovery:true},
   {wk:5,date:'7 jul',phase:'base',km:55,longRun:30,key:'Tempo 6 km + hill repeats + B2B intro (30+10)',focus:'B2B intro',recovery:false},
   {wk:6,date:'14 jul',phase:'base',km:58,longRun:30,key:'Threshold run + long run op trails',focus:'Trail gewenning',recovery:false},
-  {wk:7,date:'21 jul',phase:'build',km:62,longRun:32,key:'Back-to-back weekend (32+12) + tempo',focus:'B2B opbouwen',recovery:false},
+  {wk:7,date:'21 jul',phase:'build',km:67,longRun:32,key:'Back-to-back weekend (32+12) + tempo',focus:'B2B opbouwen',recovery:false},
   {wk:8,date:'28 jul',phase:'build',km:65,longRun:30,key:'Hitte-run middaguur + sauna protocol start',focus:'Hitte-adaptatie',recovery:false},
   {wk:9,date:'4 aug',phase:'build',km:36,longRun:22,key:'Recovery week — easy + cross-training',focus:'Herstelweek',recovery:true},
-  {wk:10,date:'11 aug',phase:'build',km:68,longRun:35,key:'B2B (35+15) + zandtraining',focus:'Vermoeidheid tolerantie',recovery:false},
+  {wk:10,date:'11 aug',phase:'build',km:72,longRun:35,key:'B2B (35+15) + zandtraining',focus:'Vermoeidheid tolerantie',recovery:false},
   {wk:11,date:'18 aug',phase:'build',km:72,longRun:35,key:'Voedingsstrategie oefenen op long run',focus:'Voeding testen',recovery:false},
-  {wk:12,date:'25 aug',phase:'build',km:75,longRun:38,key:'B2B (38+18) + mentale training',focus:'Piekaanloop',recovery:false},
+  {wk:12,date:'25 aug',phase:'build',km:79,longRun:38,key:'B2B (38+18) + mentale training',focus:'Piekaanloop',recovery:false},
   {wk:13,date:'1 sep',phase:'peak',km:56,longRun:28,key:'Recovery + race gear testen',focus:'Herstelweek',recovery:true},
-  {wk:14,date:'8 sep',phase:'peak',km:75,longRun:38,key:'Race simulatie #1: 38+25 km B2B weekend',focus:'Simulatie 1',recovery:false},
-  {wk:15,date:'15 sep',phase:'peak',km:80,longRun:40,key:'Piekweek: 40+25 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
+  {wk:14,date:'8 sep',phase:'peak',km:78,longRun:38,key:'Race simulatie #1: 38+25 km B2B weekend',focus:'Simulatie 1',recovery:false},
+  {wk:15,date:'15 sep',phase:'peak',km:85,longRun:40,key:'Piekweek: 40+25 B2B + midweek tempo',focus:'MAX VOLUME',recovery:false},
   {wk:16,date:'22 sep',phase:'peak',km:47,longRun:25,key:'Recovery — easy runs + sauna',focus:'Herstelweek',recovery:true},
-  {wk:17,date:'29 sep',phase:'peak',km:78,longRun:38,key:'Race simulatie #2: 38+25 km B2B + race-voeding',focus:'Simulatie 2',recovery:false},
-  {wk:18,date:'6 okt',phase:'peak',km:75,longRun:38,key:'Laatste grote week: 38+22 B2B + gear finaal',focus:'Laatste peak',recovery:false},
+  {wk:17,date:'29 sep',phase:'peak',km:84,longRun:38,key:'Race simulatie #2: 38+25 km B2B + race-voeding',focus:'Simulatie 2',recovery:false},
+  {wk:18,date:'6 okt',phase:'peak',km:81,longRun:38,key:'Laatste grote week: 38+22 B2B + gear finaal',focus:'Laatste peak',recovery:false},
   {wk:19,date:'13 okt',phase:'taper',km:55,longRun:25,key:'Volume -30% — easy runs + strides',focus:'Afbouw start',recovery:false},
   {wk:20,date:'20 okt',phase:'taper',km:45,longRun:20,key:'Volume -45% — focus slaap & voeding',focus:'Dieper afbouwen',recovery:false},
   {wk:21,date:'27 okt',phase:'taper',km:35,longRun:16,key:'Lichte runs + strides. Packing.',focus:'Race voorbereiding',recovery:false},
-  {wk:22,date:'3 nov',phase:'taper',km:13,longRun:5,key:'Shakeout runs. Mentale visualisatie.',focus:'Laatste rust',recovery:false},
-  {wk:23,date:'10 nov',phase:'race',km:116,longRun:60,key:'Ma-Wo shakeout 3-5 km. Do rust. Vr 60 km + Za 50 km RACE!',focus:'RACE DAY!',recovery:false},
+  {wk:22,date:'3 nov',phase:'taper',km:15,longRun:5,key:'Shakeout runs. Mentale visualisatie.',focus:'Laatste rust',recovery:false},
+  {wk:23,date:'10 nov',phase:'race',km:120,longRun:60,key:'Ma-Wo shakeout 5 km. Do rust. Vr 60 km + Za 50 km RACE!',focus:'RACE DAY!',recovery:false},
 ];
 
 // ─── MANUAL LOG (localStorage) ───
@@ -2632,10 +2672,10 @@ const WEEKLY_DETAILS = {
   ],
   7: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rustdag.',km:0},
-    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:4},
+    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:5},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 12 km met 6 km @ race effort.',km:8},
-    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + krachttraining.',km:3},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run, voorbereiden op B2B weekend.',km:3},
+    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + krachttraining.',km:5},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run, voorbereiden op B2B weekend.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'Long run 32 km. Oefen met hitte (extra laag of middag).',km:32},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back: 15 km op vermoeide benen. Focus mental toughness.',km:12},
   ],
@@ -2661,8 +2701,8 @@ const WEEKLY_DETAILS = {
     {day:'Ma',type:'rest',label:'Rust',desc:'Rustdag.',km:0},
     {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:5},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 12 km. Oefen met gels onderweg.',km:7},
-    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht + sauna.',km:3},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Probeer op zand (strand) te lopen.',km:3},
+    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht + sauna.',km:5},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Probeer op zand (strand) te lopen.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'35 km long run! Neem race-vest + volledige voeding mee.',km:35},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 20 km. Train mentale weerbaarheid.',km:15},
   ],
@@ -2679,8 +2719,8 @@ const WEEKLY_DETAILS = {
     {day:'Ma',type:'rest',label:'Rust',desc:'Rustdag. Laatste week van Build phase.',km:0},
     {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:6},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 10 km. Mentale visualisatie oefenen.',km:7},
-    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht.',km:3},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Mentaal voorbereiden op B2B.',km:3},
+    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht.',km:5},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Mentaal voorbereiden op B2B.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'38 km — langste training run! Alles op race-niveau.',km:38},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 22 km. Simuleer dag 2 gevoel.',km:18},
   ],
@@ -2695,19 +2735,19 @@ const WEEKLY_DETAILS = {
   ],
   14: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rustdag. Grote week ahead.',km:0},
-    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:3},
+    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:5},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 12 km aan race-effort.',km:5},
     {day:'Do',type:'strength',label:'Kracht',desc:'Recovery run + kracht + sauna.',km:0},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Mentaal voorbereiden op simulatie.',km:4},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Mentaal voorbereiden op simulatie.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #1: 38 km met race-voeding en gear. Focus op pacing.',km:38},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2 simulatie: 25 km op vermoeide benen. B2B ervaring opdoen!',km:25},
   ],
   15: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rust na simulatie. Extra slaap.',km:0},
-    {day:'Di',type:'easy',label:'Easy',desc:'Easy run, heel relaxed.',km:3},
+    {day:'Di',type:'easy',label:'Easy',desc:'Easy run, heel relaxed.',km:5},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run met progressie. Piekweek!',km:5},
-    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + kracht.',km:4},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Voorbereiden op MAX weekend.',km:3},
+    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + kracht.',km:5},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Voorbereiden op MAX weekend.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'PIEKWEEK: 40 km — langste trainingsrun voor de race.',km:40},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Back-to-back 25 km. Push through! Mentale grenzen verleggen.',km:25},
   ],
@@ -2722,19 +2762,19 @@ const WEEKLY_DETAILS = {
   ],
   17: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rustdag. Grote simulatie komt eraan.',km:0},
-    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:3},
+    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:5},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Tempo run 10 km. Scherp blijven.',km:6},
-    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + lichte kracht.',km:3},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Alles klaarzetten voor weekend.',km:3},
+    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + lichte kracht.',km:5},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run. Alles klaarzetten voor weekend.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'RACE SIMULATIE #2: 38 km met volledige race-setup en voeding.',km:38},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Dag 2: 25 km op vermoeide benen. Laatste grote B2B test!',km:25},
   ],
   18: [
     {day:'Ma',type:'rest',label:'Rust',desc:'Rust na laatste grote simulatie.',km:0},
-    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:3},
+    {day:'Di',type:'easy',label:'Easy',desc:'Easy run zone 2.',km:5},
     {day:'Wo',type:'tempo',label:'Tempo',desc:'Laatste tempo run voor taper. 8 km @ threshold.',km:6},
-    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + laatste zware krachttraining.',km:3},
-    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run.',km:3},
+    {day:'Do',type:'strength',label:'Kracht',desc:'Recovery + laatste zware krachttraining.',km:5},
+    {day:'Vr',type:'easy',label:'Easy',desc:'Easy run.',km:5},
     {day:'Za',type:'long',label:'Long Run',desc:'Laatste lange run: 38 km. Geniet ervan!',km:38},
     {day:'Zo',type:'b2b',label:'B2B',desc:'Laatste B2B: 22 km. Daarna begint taper.',km:22},
   ],
@@ -2770,13 +2810,13 @@ const WEEKLY_DETAILS = {
     {day:'Di',type:'easy',label:'Shakeout',desc:'Shakeout run 5 km. Licht en los.',km:5},
     {day:'Wo',type:'easy',label:'Shakeout',desc:'Shakeout 5 km met paar strides.',km:5},
     {day:'Do',type:'rest',label:'Rust',desc:'Rust. Mentale voorbereiding. Visualiseer de finish.',km:0},
-    {day:'Vr',type:'easy',label:'Shakeout',desc:'Laatste shakeout 3 km. Je bent er klaar voor!',km:3},
+    {day:'Vr',type:'easy',label:'Shakeout',desc:'Laatste shakeout 5 km. Je bent er klaar voor!',km:5},
     {day:'Za',type:'rest',label:'Rust',desc:'Volledige rust. Carb loading. Vroeg naar bed.',km:0},
     {day:'Zo',type:'rest',label:'Rust',desc:'Rust. Reis naar Marokko als nodig.',km:0},
   ],
   23: [
-    {day:'Ma',type:'easy',label:'Shakeout',desc:'Aankomst Marokko. Lichte shakeout 3 km.',km:3},
-    {day:'Di',type:'easy',label:'Shakeout',desc:'Shakeout 3 km. Acclimatiseer. Check routeinfo.',km:3},
+    {day:'Ma',type:'easy',label:'Shakeout',desc:'Aankomst Marokko. Lichte shakeout 5 km.',km:5},
+    {day:'Di',type:'easy',label:'Shakeout',desc:'Shakeout 5 km. Acclimatiseer. Check routeinfo.',km:5},
     {day:'Wo',type:'rest',label:'Rust',desc:'Volledige rust. Hydrateer. Mentale focus.',km:0},
     {day:'Do',type:'rest',label:'Rust',desc:'Rust. Gear klaarzetten. Vroeg slapen.',km:0},
     {day:'Vr',type:'long',label:'RACE D1',desc:'RACE DAG 1: 60 km door de Sahara. De langste etappe. YOU GOT THIS!',km:60},
@@ -3066,6 +3106,10 @@ if (window.innerWidth <= 768) {
 }
 
 // ─── INIT ───
+// Render the week plan + manual-log controls up front so logging always works,
+// even if the Strava data fetch below is slow, fails, or hangs (offline phone).
+// loadData() re-renders afterwards to layer in the actual Strava distances.
+try { renderWeekTable(); renderCurrentWeek(); } catch (e) {}
 loadData();
 </script>
 </body>
